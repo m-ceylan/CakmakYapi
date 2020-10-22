@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cakmak.Yapi.Presentation.Controllers
 {
-    public class Test : Controller
+    public class CatalogController : Controller
     {
         public IActionResult Index()
         {

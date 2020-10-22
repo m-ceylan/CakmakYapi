@@ -4,45 +4,105 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Cakmak.Yapi.Presentation</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
     <link rel="stylesheet" href="~/css/site.css" />
+
+   
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css">
+
+    <!-- Theme Style -->
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+
+    <!-- Responsive -->
+    <link rel="stylesheet" type="text/css" href="stylesheets/responsive.css">
+
+    <!-- Colors -->
+    <link rel="stylesheet" type="text/css" href="stylesheets/colors/color1.css" id="colors">
+
+    <!-- Animation Style -->
+    <link rel="stylesheet" type="text/css" href="stylesheets/animate.css">
+
+    <!-- Favicon and touch icons  -->
+    <link href="icon/apple-touch-icon-48-precomposed.png" rel="apple-touch-icon-precomposed" sizes="48x48">
+    <link href="icon/apple-touch-icon-32-precomposed.png" rel="apple-touch-icon-precomposed">
+    <link href="icon/favicon.png" rel="shortcut icon">
+
+
+
+
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Cakmak.Yapi.Presentation</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <section class="loading-overlay">
+        <div class="Loading-Page">
+            <h2 class="loader">Loading</h2>
+        </div>
+    </section>
+
+    <div class="site-wrapper ">
+
+        @await Component.InvokeAsync("Header")
+        @RenderBody()
+        <!-- Slider -->
+        <!-- Footer -->
+        @await Component.InvokeAsync("Footer")
+      
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - Cakmak.Yapi.Presentation - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+   
+
+
+    <div id="off-canvas">
+        <div class="off-canvas-overlay"></div>
+        <div class="off-canvas-wrap">
+            <div class="widget widget_text widget_info">
+                <h5 class="widget-title">About Me</h5>
+                <div class="textwidget">
+                    <p>Sed pellentesque nibh enim, quis euismod enim lacinia nec. Phasellus quam diam, semper in erat eu. Consectetur adipiscing elit. Sed pellentesque nibh enim, quis euismod enim lacinia nec.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                        <a href="#"><i class="fa fa-behance"></i></a>
+                    </div>
+                </div><!-- /.textwidget -->
+            </div>
         </div>
-    </footer>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="javascript/jquery.min.js"></script>
+    <script type="text/javascript" src="javascript/bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascript/jquery.easing.js"></script>
+    <script type="text/javascript" src="javascript/jquery-waypoints.js"></script>
+    <script type="text/javascript" src="javascript/jquery-countTo.js"></script>
+    <script type="text/javascript" src="javascript/jquery.cookie.js"></script>
+    <script type="text/javascript" src="javascript/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="javascript/parallax.js"></script>
+    <script type="text/javascript" src="javascript/imagesloaded.min.js"></script>
+    <script type="text/javascript" src="javascript/owl.carousel.js"></script>
+    <script type="text/javascript" src="javascript/jquery.isotope.min.js"></script>
+    <script type="text/javascript" src="javascript/jquery.magnific-popup.min.js"></script>
+    <script type="text/javascript" src="javascript/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="javascript/main.js"></script>
+
+
+    <!-- Revolution Slider -->
+    <script type="text/javascript" src="javascript/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="javascript/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript" src="javascript/slider.js"></script>
+
+
+
+
+
+
+
+
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -6,12 +6,62 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\site.min.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BundlerMinifier.Core" Version="3.2.449" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bundleconfig.json" />
+    <None Include="wwwroot\template\isuzu-package\documentation\javascript\html5.js" />
+    <None Include="wwwroot\template\isuzu-package\documentation\javascript\jquery.easing.1.3.min.js" />
+    <None Include="wwwroot\template\isuzu-package\documentation\javascript\jquery.min.js" />
+    <None Include="wwwroot\template\isuzu-package\documentation\javascript\jquery.nav.js" />
+    <None Include="wwwroot\template\isuzu-package\documentation\javascript\jquery.scrollTo.js" />
+    <None Include="wwwroot\template\isuzu-package\documentation\javascript\main.js" />
+    <None Include="wwwroot\template\isuzu-package\documentation\javascript\prism.js" />
+    <None Include="wwwroot\contact\contact-process.php" />
+    <None Include="wwwroot\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\fonts\icomoon.svg" />
+    <None Include="wwwroot\images\search.svg" />
+    <None Include="wwwroot\javascript\bootstrap.min.js" />
+    <None Include="wwwroot\javascript\gmap3.min.js" />
+    <None Include="wwwroot\javascript\html5shiv.js" />
+    <None Include="wwwroot\javascript\imagesloaded.min.js" />
+    <None Include="wwwroot\javascript\jquery-countTo.js" />
+    <None Include="wwwroot\javascript\jquery-validate.js" />
+    <None Include="wwwroot\javascript\jquery-waypoints.js" />
+    <None Include="wwwroot\javascript\jquery.cookie.js" />
+    <None Include="wwwroot\javascript\jquery.easing.js" />
+    <None Include="wwwroot\javascript\jquery.fitvids.js" />
+    <None Include="wwwroot\javascript\jquery.flexslider-min.js" />
+    <None Include="wwwroot\javascript\jquery.isotope.min.js" />
+    <None Include="wwwroot\javascript\jquery.magnific-popup.min.js" />
+    <None Include="wwwroot\javascript\jquery.min.js" />
+    <None Include="wwwroot\javascript\jquery.themepunch.revolution.min.js" />
+    <None Include="wwwroot\javascript\jquery.themepunch.tools.min.js" />
+    <None Include="wwwroot\javascript\main.js" />
+    <None Include="wwwroot\javascript\owl.carousel.js" />
+    <None Include="wwwroot\javascript\parallax.js" />
+    <None Include="wwwroot\javascript\respond.min.js" />
+    <None Include="wwwroot\javascript\slider.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cakmak.Yapi.Helpers\Cakmak.Yapi.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

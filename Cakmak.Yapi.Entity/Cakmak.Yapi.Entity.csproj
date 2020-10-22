@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Application\" />
-    <Folder Include="Definition\" />
-    <Folder Include="ProjectUser\" />
+    <ProjectReference Include="..\Cakmak.Yapi.Core\Cakmak.Yapi.Core.csproj" />
   </ItemGroup>
 
 </Project>
