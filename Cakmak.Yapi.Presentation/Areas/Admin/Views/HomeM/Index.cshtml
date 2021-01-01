@@ -1,7 +1,133 @@
 ﻿
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<div class="content animated fadeIn" id="app">
+    
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">İlgi Alanları</h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <el-button size="mini"
+                               type="success">
+                        <i class="icon-plus-circle2 mr-2 "></i>
+                        Ekle
+                    </el-button>
+                </div>
+            </div>
+        </div>
 
+
+        @* Table Template Start *@
+        <template v-if="0==0">
+            <div class="table-responsive">
+                <el-table :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+                          style="width: 100%">
+                    <el-table-column label="Tarih"
+                                     prop="date">
+                    </el-table-column>
+                    <el-table-column label="İsim"
+                                     prop="name">
+                    </el-table-column>
+                    <el-table-column align="right">
+                        <template slot="header" slot-scope="scope">
+                            <el-input v-model="search"
+                                      size="mini"
+                                      placeholder="Type to search" />
+                        </template>
+                        <template slot-scope="scope">
+                            <el-button size="mini"
+                                       @@click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                            <el-button size="mini"
+                                       type="danger"
+                                       @@click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+        </template>
+        @* Table Template End *@
+
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+
+@section Scripts{ 
+
+<script>
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            tableData: [{
+                date: '2016-05-03',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+            }, {
+                date: '2016-05-02',
+                name: 'John',
+                address: 'No. 189, Grove St, Los Angeles'
+            }, {
+                date: '2016-05-04',
+                name: 'Morgan',
+                address: 'No. 189, Grove St, Los Angeles'
+            }, {
+                date: '2016-05-01',
+                name: 'Jessy',
+                address: 'No. 189, Grove St, Los Angeles'
+            }],
+            search: ''
+            
+        },
+        methods: {
+            handleEdit(index, row) {
+                console.log(index, row);
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+                this.open();
+            },
+            open() {
+                this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                    confirmButtonText: 'OK',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    this.$message({
+                        type: 'success',
+                        message: 'Delete completed'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Delete canceled'
+                    });
+                });
+        },
+
+        async beforeMount() {
+            
+        },
+        watch: {
+
+           
+            }
+    });
+
+
+
+</script>
+
+
+} 
