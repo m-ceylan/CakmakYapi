@@ -21,57 +21,33 @@
     <!-- Sidebar content -->
     <div class="sidebar-content">
         <div class="card card-sidebar-mobile">
-
-            <!-- Header -->
-            <div class="card-header header-elements-inline">
-                <h6 class="card-title">Navigation</h6>
-                <div class="header-elements">
-                    <div class="list-icons">
-                        <a class="list-icons-item" data-action="collapse"></a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- User menu -->
-            <div class="sidebar-user">
-                <div class="card-body">
-                    <div class="media">
-                        <div class="mr-3">
-                            <a href="#"><img src="/admintemplate/full/global_assets/images/placeholders/placeholder.jpg" width="38" height="38" class="rounded-circle" alt=""></a>
-                        </div>
-
-                        <div class="media-body">
-                            <div class="media-title font-weight-semibold">Victoria Baker</div>
-                            <div class="font-size-xs opacity-50">
-                                <i class="icon-pin font-size-sm"></i> &nbsp;Santa Ana, CA
-                            </div>
-                        </div>
-
-                        <div class="ml-3 align-self-center">
-                            <a href="#" class="text-white"><i class="icon-cog3"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /user menu -->
             <!-- Main navigation -->
             <div class="card-body p-0">
                 <ul class="nav nav-sidebar" data-nav-type="accordion">
 
                     <!-- Main -->
-                    <li class="nav-item-header mt-0"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
+                    <li class="nav-item-header mt-0"><div class="text-uppercase font-size-xs line-height-xs">Menü</div> <i class="icon-menu" title="Menü"></i></li>
                     <li class="nav-item">
-                        <a href="index.html" class="nav-link active">
+                        <a href="@Url.Action("Index","HomeM")" class="nav-link active">
                             <i class="icon-home4"></i>
                             <span>
-                                Dashboard
-                                <span class="d-block font-weight-normal opacity-50">No active orders</span>
+                                Genel
                             </span>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index","AboutM")" class="nav-link active">
+                            <i class="icon-home4"></i>
+                            <span>
+                                Hakkımızda
+                            </span>
+                        </a>
+                    </li>
+
+
                     <li class="nav-item nav-item-submenu">
                         <a href="#" class="nav-link"><i class="icon-copy"></i> <span>Layouts</span></a>
-
                         <ul class="nav nav-group-sub" data-submenu-title="Layouts">
                             <li class="nav-item"><a href="/admintemplate/full/layout_1/LTR/default/full/index.html" class="nav-link">Default layout</a></li>
                             <li class="nav-item"><a href="/admintemplate/full/layout_2/LTR/default/full/index.html" class="nav-link">Layout 2</a></li>
@@ -81,6 +57,7 @@
                             <li class="nav-item"><a href="/admintemplate/full/layout_6/LTR/default/full/index.html" class="nav-link disabled">Layout 6 <span class="badge bg-transparent align-self-center ml-auto">Coming soon</span></a></li>
                         </ul>
                     </li>
+
                     <li class="nav-item nav-item-submenu">
                         <a href="#" class="nav-link"><i class="icon-color-sampler"></i> <span>Themes</span></a>
 

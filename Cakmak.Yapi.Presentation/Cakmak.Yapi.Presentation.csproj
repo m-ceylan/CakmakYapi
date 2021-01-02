@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -5780,6 +5779,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cakmak.Yapi.Helpers\Cakmak.Yapi.Helpers.csproj" />
+    <ProjectReference Include="..\Cakmak.Yapi.Models.Base\Cakmak.Yapi.Models.Base.csproj" />
   </ItemGroup>
 
 </Project>

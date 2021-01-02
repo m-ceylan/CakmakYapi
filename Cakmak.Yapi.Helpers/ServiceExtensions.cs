@@ -16,6 +16,7 @@ namespace Cakmak.Yapi.Helpers
 
             #region Application  
             services.AddSingleton(x => new FeedBackRepository(connectionString, baseDBName, "feedBack"));
+            services.AddSingleton(x => new AboutRepository(connectionString, baseDBName, "about"));
             #endregion
             #region Definition 
             services.AddSingleton(x => new CatalogRepository(connectionString, baseDBName, "catalog"));

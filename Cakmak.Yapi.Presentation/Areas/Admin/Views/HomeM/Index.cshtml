@@ -5,27 +5,37 @@
 }
 
 <div class="content animated fadeIn" id="app">
-    
+
     <div class="card">
         <div class="card-header header-elements-inline">
             <h5 class="card-title">İlgi Alanları</h5>
             <div class="header-elements">
                 <div class="list-icons">
-                    <el-button size="mini"
-                               type="success">
+                    <el-button v-if="!isEditForm" size="mini"
+                               plain
+                               @@click="isEditForm=true">
                         <i class="icon-plus-circle2 mr-2 "></i>
                         Ekle
+                    </el-button>
+                    <el-button v-else size="mini"
+                               plain
+                               @@click="isEditForm=false">
+                        <i class="icon-arrow-left8 mr-2 "></i>
+                        Listeye Dön
                     </el-button>
                 </div>
             </div>
         </div>
 
-
         @* Table Template Start *@
-        <template v-if="0==0">
+        <template v-if="!isEditForm">
             <div class="table-responsive">
                 <el-table :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
                           style="width: 100%">
+
+                    <el-table-column label="ID"
+                                     prop="1">
+                    </el-table-column>
                     <el-table-column label="Tarih"
                                      prop="date">
                     </el-table-column>
@@ -36,14 +46,18 @@
                         <template slot="header" slot-scope="scope">
                             <el-input v-model="search"
                                       size="mini"
-                                      placeholder="Type to search" />
+                                      placeholder="Ara" />
                         </template>
+
                         <template slot-scope="scope">
                             <el-button size="mini"
-                                       @@click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                                       type="warning"
+                                       plain
+                                       @@click="handleEdit(scope.$index, scope.row)"><i class="icon-database-edit2"></i></el-button>
                             <el-button size="mini"
                                        type="danger"
-                                       @@click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                                       plain
+                                       @@click="handleDelete(scope.$index, scope.row)"> <i class="icon-trash"></i></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -51,83 +65,107 @@
         </template>
         @* Table Template End *@
 
+        @* Edit Template Start *@
+        <template v-else>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-body">
+                        <input autocomplete="false" name="hidden" type="text" style="display:none;">
+                        <div class="row">
+                            <div class="form-group col-md-9">
+                                <label> Başlık </label>
+                                <input type="text" class="form-control" autocomplete="new-password" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Sıra NO:</label>
+                                <input type="text" class="form-control" autocomplete="new-password" />
+                            </div>
+                        </div>
+                        <div class="text-right mt-3">
+                            <button type="submit" class="btn btn-primary btn-create-participant">
+                            <template v-if=" updateID.replace(/\s/g, '').length > 0">
+                                Güncelle
+                            </template>
+                            <template v-else>
+                                Ekle
+                            </template><i class="icon-paperplane ml-2"></i></button>
+                        </div>
+                    </div>
 
-
-
-
-
-
-
-
+                </div>
+            </div>
+        </template>
+        @* Edit Template End *@
     </div>
 </div>
 
+@section Scripts{
 
-@section Scripts{ 
-
-<script>
-
-    var app = new Vue({
-        el: '#app',
-        data: {
-            tableData: [{
-                date: '2016-05-03',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-            }, {
-                date: '2016-05-02',
-                name: 'John',
-                address: 'No. 189, Grove St, Los Angeles'
-            }, {
-                date: '2016-05-04',
-                name: 'Morgan',
-                address: 'No. 189, Grove St, Los Angeles'
-            }, {
-                date: '2016-05-01',
-                name: 'Jessy',
-                address: 'No. 189, Grove St, Los Angeles'
-            }],
-            search: ''
-            
-        },
-        methods: {
-            handleEdit(index, row) {
-                console.log(index, row);
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                tableData: [{
+                    date: '2016-05-03',
+                    name: 'Tom',
+                    address: 'No. 189, Grove St, Los Angeles'
+                }, {
+                    date: '2016-05-02',
+                    name: 'John',
+                    address: 'No. 189, Grove St, Los Angeles'
+                }, {
+                    date: '2016-05-04',
+                    name: 'Morgan',
+                    address: 'No. 189, Grove St, Los Angeles'
+                }, {
+                    date: '2016-05-01',
+                    name: 'Jessy',
+                    address: 'No. 189, Grove St, Los Angeles'
+                }],
+                search: '',
+                updateID: '',
+                isEditForm: false,
             },
-            handleDelete(index, row) {
-                console.log(index, row);
-                this.open();
+            methods: {
+                handleEdit(index, row) {
+                    this.updateID = row.name;
+                    this.isEditForm = true;
+                    console.log(index, row);
+                },
+                handleDelete(index, row) {
+                    console.log(index, row);
+                    this.open();
+                },
+                open() {
+                    this.$confirm('Bu kaydı silmek istediğine emin misin?', 'Uyarı', {
+                        confirmButtonText: 'Evet',
+                        cancelButtonText: 'Vazgeç',
+                        type: 'warning'
+                    }).then(() => {
+                        this.$message({
+                            type: 'success',
+                            message: 'Delete completed'
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: 'Delete canceled'
+                        });
+                    });
+                }
             },
-            open() {
-                this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
-                    confirmButtonText: 'OK',
-                    cancelButtonText: 'Cancel',
-                    type: 'warning'
-                }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: 'Delete completed'
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: 'Delete canceled'
-                    });
-                });
-        },
 
-        async beforeMount() {
-            
-        },
-        watch: {
+            async beforeMount() {
 
-           
+            },
+            watch: {
+
             }
-    });
+        });
 
 
 
-</script>
+    </script>
 
 
 } 

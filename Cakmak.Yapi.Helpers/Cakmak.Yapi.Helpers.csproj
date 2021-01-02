@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.9" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cakmak.Yapi.Models.Base\Cakmak.Yapi.Models.Base.csproj" />
     <ProjectReference Include="..\Cakmak.Yapi.Repository\Cakmak.Yapi.Repository.csproj" />
   </ItemGroup>
 

@@ -1,12 +1,17 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using static Cakmak.Yapi.Core.Enums.Enums;
 
 namespace Cakmak.Yapi.Core.Entity
 {
-   public class BaseEntity
+    [BsonIgnoreExtraElements]
+    public class BaseEntity
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
         public DateTime CreateDate { get; set; } = DateTime.Now;

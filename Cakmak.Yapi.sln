@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{08
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cakmak.Yapi.Helpers", "Cakmak.Yapi.Helpers\Cakmak.Yapi.Helpers.csproj", "{598868B2-0F36-4ACA-BD3F-6EB6AC39A58A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cakmak.Yapi.Presentation", "Cakmak.Yapi.Presentation\Cakmak.Yapi.Presentation.csproj", "{16C1345C-2302-4725-A94B-48DC8BE7A4F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cakmak.Yapi.Presentation", "Cakmak.Yapi.Presentation\Cakmak.Yapi.Presentation.csproj", "{16C1345C-2302-4725-A94B-48DC8BE7A4F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
