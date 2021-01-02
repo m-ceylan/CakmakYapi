@@ -50,8 +50,8 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult<BaseResponse<AddAboutResponse>>> AddAbout([FromBody]AddAboutRequest request)
         {
-
             var response = new BaseResponse<AddAboutResponse>();
+            response.Data = new AddAboutResponse();
             var item = new About 
             {
              Title=request.Title
@@ -59,6 +59,8 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
 
             await repo.AddAsync(item);
             response.SetMessage("Kayıt başarıyla eklendi");
+
+            response.Data.Id = item.Id;
 
             return Ok(response);
         }
@@ -79,6 +81,25 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
 
             return Ok(response);
         }
+        [HttpPost]
+        public async Task<ActionResult<BaseResponse<DeleteAboutResponse>>> DeleteAbout([FromBody]DeleteAboutRequest request)
+        {
+            var response = new BaseResponse<DeleteAboutResponse>();
+            response.Data = new DeleteAboutResponse();
+
+            var item = await repo.GetByIdAsync(request.Id);
+            if (item == null)
+                return NotFound();
+
+            await repo.DeleteAsync(request.Id);
+            response.SetMessage("Kayıt başarıyla silindi.");
+
+            return Ok(response);
+        }
+
+
+
+
 
     }
 }

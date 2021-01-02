@@ -18,7 +18,7 @@
                     </el-button>
                     <el-button v-else size="mini"
                                plain
-                               @@click="isEditForm=false">
+                               @@click="isEditForm=false;updateID=''">
                         <i class="icon-arrow-left8 mr-2 "></i>
                         Listeye Dön
                     </el-button>
@@ -52,13 +52,14 @@
                                 </td>
                                 <td>{{item.title}}</td>
                                 <td>
-                                    <div class="demo-image">
+                                    <label>Test</label>
+                                    @*<div class="demo-image">
                                         <div class="block" >
                                             <el-image style="width: 100px; height: 100px"
                                                       :src="url"
                                                      ></el-image>
                                         </div>
-                                    </div>
+                                    </div>*@
 
                                 </td>
                                 <td> 
@@ -69,7 +70,7 @@
 
                                 <td class="text-center">
                                     <button class="btn btn-outline-info btn-sm" @@click="handleEdit(item)" title="Güncelle"><i class="icon-database-edit2"></i></button>
-                                    <button class="btn btn-outline-danger btn-sm" @@click="open()"  title="Sil"><i class="icon-trash"></i></button>
+                                    <button class="btn btn-outline-danger btn-sm" @@click="confirmDelete(item)"  title="Sil"><i class="icon-trash"></i></button>
                                 </td>
                             </tr>
                        
@@ -130,7 +131,6 @@
 @section Scripts{
 
     <script>
-        
         var app = new Vue({
             el: '#app',
             data: {
@@ -180,6 +180,10 @@
                     this.response = (await this.$service.post('aboutM/AddAbout', this.request)).data;
                     if (!this.response.hasError) {
                         this.$message.success(this.response.message);
+                        this.updateID = '';
+                        this.isEditForm = false;
+                        this.request.id = this.response.data.id;
+                        this.items.unshift(this.request);
                     } else {
                         this.$message.error(this.response.message);
                     }
@@ -200,26 +204,29 @@
                     this.updateID = row.id;
                     this.request = row;
                     this.isEditForm = true;
-                    console.log(index, row);
                 },
                 handleDelete(index, row) {
-                    console.log(index, row);
-                    this.open();
+                    this.confirmDelete();
                 },
-                open() {
+                  confirmDelete(item)   {
                     this.$confirm('Bu kaydı silmek istediğine emin misin?', 'Uyarı', {
                         confirmButtonText: 'Evet',
                         cancelButtonText: 'Vazgeç',
                         type: 'warning'
-                    }).then(() => {
-                        this.$message({
-                            type: 'success',
-                            message: 'Delete completed'
-                        });
+                    }).then(async () => {
+                        this.response = (await this.$service.post('aboutM/deleteAbout', item)).data;
+                        if (!this.response.hasError) {
+                            this.$message.success(this.response.message);
+                            this.getData();
+                        } else {
+                            this.$message.error(this.response.message);
+                        }
+
+
                     }).catch(() => {
                         this.$message({
                             type: 'info',
-                            message: 'Delete canceled'
+                            message: 'Vazgeçildi'
                         });
                     });
                 },

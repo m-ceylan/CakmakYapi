@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 
 namespace Cakmak.Yapi.Presentation.Areas.Admin.Models.Response.AboutResponse
 {
-    public class AddAboutResponse
+    public class DeleteAboutResponse
     {
-        public string Id { get; set; }
     }
 }
