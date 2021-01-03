@@ -4,3 +4,22 @@
     margin-left:2px;
 }
 
+.width-50{
+    width:50px;
+}
+
+
+.el-checkbox__inner {
+    display: inline-block;
+    position: relative;
+    border: 1px solid #DCDFE6;
+    border-radius: 2px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 20px!important;
+    height: 20px!important;
+    background-color: #FFF;
+    z-index: 1;
+    -webkit-transition: border-color .25s cubic-bezier(.71,-.46,.29,1.46),background-color .25s cubic-bezier(.71,-.46,.29,1.46);
+    transition: border-color .25s cubic-bezier(.71,-.46,.29,1.46),background-color .25s cubic-bezier(.71,-.46,.29,1.46);
+}

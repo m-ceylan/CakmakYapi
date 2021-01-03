@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Cakmak.Yapi.Presentation.Areas.Admin.Models.Request.AboutRequest
 {
-    public class AddAboutRequest
+    public class UpdateIsActiveAboutRequest
     {
+        [CustomRequiredID]
         [CustomRequired]
-        public string Title { get; set; }
-
+        public string Id { get; set; }
+        public bool IsActive { get; set; }
     }
 }
