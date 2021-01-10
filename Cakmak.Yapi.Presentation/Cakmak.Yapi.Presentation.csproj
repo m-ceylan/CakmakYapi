@@ -377,7 +377,7 @@
     <None Include="wwwroot\admintemplate\full\global_assets\js\demo_pages\alpaca_advanced_dark.js" />
     <None Include="wwwroot\admintemplate\full\global_assets\js\demo_pages\alpaca_basic.js" />
     <None Include="wwwroot\admintemplate\full\global_assets\js\demo_pages\alpaca_controls.js" />
-    <None Include="wwwroot\admintemplate\full\global_assets\js\demo_pages\animations_css3.js" />
+    <None Include="wwwroot\admintemplate\full\assets\js\animations_css3.js" />
     <None Include="wwwroot\admintemplate\full\global_assets\js\demo_pages\animations_velocity_basic.js" />
     <None Include="wwwroot\admintemplate\full\global_assets\js\demo_pages\animations_velocity_examples.js" />
     <None Include="wwwroot\admintemplate\full\global_assets\js\demo_pages\animations_velocity_ui.js" />
