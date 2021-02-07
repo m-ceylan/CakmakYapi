@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<template>
+    <div>
+        <el-upload class="upload-css"
+                   :file-list="uploadFiles"
+                   ref="upload"
+                   :on-success="upLoadSuccess"
+                   :on-error="upLoadError"
+                   :action="uploadURL"
+                   :auto-upload="false">
+            <el-button slot="trigger" size="small" type="primary">Select file</el-button>
+            <el-button style="margin-left: 10px;" size="small" type="success" @@click="submitUpload">Upload to server</el-button>
+        </el-upload>
+    </div>
+</template>
+<style lang="scss" scoped>
+</style>
+@section Scripts{
+    <script>
+        
+
+        var app = new Vue({
+            props: [],
+            data() {
+                return {
+                    projectName: "",
+                    uploadFiles: []
+                };
+            },
+            computed: {
+
+                uploadURL: function () {
+                    debugger;
+                    return "/project/upload?userId=" + 1;
+                }
+            },
+            methods: {
+
+                submitUpload() {
+                    debugger;
+                    this.$refs.upload.submit();
+                },
+
+                upLoadSuccess(response, file, fileList) {
+                    debugger;
+                    if (response == "ok") {
+                        Console.log(response + "already uploaded" + file);
+                        Console.log("Project added successfully");
+                    } else {
+                        Console.log("Project added failed");
+                    }
+                },
+
+                upLoadError(response, file, fileList) {
+                    debugger;
+                    Console.log("Project added failed");
+                }
+            }
+         });
+    </script>
+
+
+
+}

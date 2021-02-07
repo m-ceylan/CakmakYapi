@@ -114,10 +114,16 @@
                     <tbody>
 
                         <tr v-for="item in items.filter(data => !filter.SearchTerm || data.title.toLowerCase().includes(filter.SearchTerm.toLowerCase()))" :key="item.id">
+
                             <td>
                                 <el-checkbox :label="item.id" v-model="selectedIDs" :key="item.id"><span></span></el-checkbox>
                             </td>
                             <td>{{item.title}}</td>
+                            <td>
+                                {{item.description}}
+                            </td>
+                          
+
                             <td class="text-center">
                                 <button class="btn btn-outline-info  btn-sm" @@click="handleEdit(item)" title="Güncelle"><i class="icon-database-edit2"></i></button>
                                 <button class="btn btn-outline-danger btn-sm" @@click="confirmDelete(item)" title="Sil"><i class="icon-trash"></i></button>
@@ -154,7 +160,7 @@
                         <div class="row">
                             <div class="form-group col-lg-2">
                                 <el-upload class="avatar-uploader"
-                                           action="https://jsonplaceholder.typicode.com/posts/"
+                                           action="http://localhost:5005/admin/fileUpload/fTPFileUpload"
                                            :show-file-list="false"
                                            :on-success="handleAvatarSuccess"
                                            :before-upload="beforeAvatarUpload">
@@ -163,11 +169,20 @@
                                 </el-upload>
                             </div>
 
-                            <div class="col-lg-12">
+                            <div class="col-lg-10 ">
                                 <div class="form-group row">
                                     <label> Başlık </label>
                                     <el-input v-model="request.title"></el-input>
                                     <span class="validation-error" v-if="response.validationErrors.some(x => x.key == 'Title')">{{ response.validationErrors.filter(x => x.key == 'Title')[0].value }}</span>
+                                </div>
+                                <div class="form-group row">
+                                    <label>Özet</label>
+                                    <el-input type="textarea"
+                                              :rows="2"
+                                              v-model="request.description">
+                                    </el-input>
+
+                                    <span class="validation-error" v-if="response.validationErrors.some(x => x.key == 'Description')">{{ response.validationErrors.filter(x => x.key == 'Description')[0].value }}</span>
                                 </div>
 
                             </div>
@@ -179,7 +194,10 @@
                                 <el-upload action="#"
                                            list-type="picture-card"
                                            :auto-upload="false"
-                                           multiple>
+                                           multiple
+                                           ref="upload"
+                                           :file-list="filesTest"
+                                           >
                                     <i slot="default" class="el-icon-plus"></i>
                                     <div slot="file" slot-scope="{file}">
                                         <img class="el-upload-list__item-thumbnail"
@@ -241,6 +259,8 @@
         var app = new Vue({
             el: '#app',
             data: {
+                fileT:'',
+                filesTest:[],
                 dialogImageUrl: '',
                 dialogVisible: false,
                 disabled: false,
@@ -255,7 +275,9 @@
                 checkAll: false,
                 request: {
                     id: null,
-                    title: ''
+                    title: '',
+                    description: '',
+                    denedim: null
                 },
                 filter: {
                     Skip: 0,
@@ -273,6 +295,7 @@
                 search: ''
             },
             methods: {
+
                 handleRemove(file) {
                     console.log(file);
                 },
@@ -280,8 +303,32 @@
                     this.dialogImageUrl = file.url;
                     this.dialogVisible = true;
                 },
-                handleDownload(file) {
-                    console.log(file);
+               async handleDownload(file) {
+                   debugger;
+                   this.fileT = file;
+                   let formData = new FormData();
+
+                   formData.append('image', this.fileT.raw);
+
+                   axios.post('http://localhost:5005/admin/fileUpload/fTPFileUpload',
+                       formData,
+                       {
+                           headers: {
+                               'Content-Type': 'multipart/form-data'
+                           }
+                       }
+                   ).then(function () {
+                       console.log('SUCCESS!!');
+                   })
+                       .catch(function () {
+                           console.log('FAILURE!!');
+                       });
+                   //var formData = new FormData();
+                   //var list = this.$refs.upload.uploadFiles[0];
+                   //formData.append("file", list);
+
+                   //this.response = (await this.$serviceFile.post('servicesM/add', formData)).data;
+                   // console.log(file);
                 },
                 handleAvatarSuccess(res, file) {
                     this.imageUrl = URL.createObjectURL(file.raw);
@@ -300,7 +347,7 @@
                 },
                 //Data Operations Start
                 getData: async function () {
-                    var res = (await this.$service.post('catalogM/get', {
+                    var res = (await this.$service.post('servicesM/get', {
                         ... this.filter,
                         Skip: (this.filter.CurrentPage * this.filter.Take) - this.filter.Take
                     }));
@@ -309,24 +356,41 @@
                     this.filter.TotalCount = res.data.data.totalCount;
                 },
                 addItem: async function () {
-                    this.response = (await this.$service.post('catalogM/add', this.request)).data;
-                    if (!this.response.hasError) {
-                        this.$message.success(this.response.message);
-                        this.updateID = '';
-                        this.isEditForm = false;
-                        this.request.id = this.response.data.id;
-                        this.items.unshift(this.request);
-                        this.request = {
-                            id: null,
-                            title: ''
-                        };
+                    debugger; 
 
-                    } else {
-                        this.$message.error(this.response.message);
-                    }
+                    var list = this.$refs.upload.uploadFiles;
+
+
+                    axios.post('http://localhost:5005/admin/servicesM/add', list,
+                        {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }).then(response => {
+                            alert(response.data);
+                        }).catch(error => {
+                            console.log(error);
+                        });
+
+                    //this.response = (await this.$service.post('servicesM/add', this.request )).data;
+                    //if (!this.response.hasError) {
+                    //    this.$message.success(this.response.message);
+                    //    this.updateID = '';
+                    //    this.isEditForm = false;
+                    //    this.request.id = this.response.data.id;
+                    //    this.items.unshift(this.request);
+                    //    this.request = {
+                    //        id: null,
+                    //        title: ''
+                    //    };
+
+                    //} else {
+                    //    this.$message.error(this.response.message);
+                    //}
+
                 },
                 updateItem: async function () {
-                    this.response = (await this.$service.post('catalogM/update', this.request)).data;
+                    this.response = (await this.$service.post('servicesM/update', this.request)).data;
                     if (!this.response.hasError) {
                         this.$message.success(this.response.message);
                     } else {
@@ -340,7 +404,7 @@
                         cancelButtonText: 'Vazgeç',
                         type: 'warning'
                     }).then(async () => {
-                        this.response = (await this.$service.post('catalogM/delete', item)).data;
+                        this.response = (await this.$service.post('servicesM/delete', item)).data;
                         if (!this.response.hasError) {
                             this.$message.success(this.response.message);
                             this.getData();
@@ -367,7 +431,7 @@
                             SelectedIDs: this.selectedIDs
                         };
 
-                        this.response = (await this.$service.post('catalogM/bulkDelete', request)).data;
+                        this.response = (await this.$service.post('servicesM/bulkDelete', request)).data;
                         if (!this.response.hasError) {
                             this.$message.success(this.response.message);
                             this.selectedIDs = [];
@@ -383,8 +447,26 @@
                         });
                     });
 
-                },
 
+
+
+
+                },
+                changeIsActive: async function (item) {
+                    debugger;
+
+                    var request = {
+                        Id: item.id,
+                        IsActive: !item.isActive
+                    };
+
+                    this.response = (await this.$service.post('servicesM/updateActive', request)).data;
+                    if (!this.response.hasError) {
+                        this.$message.success(this.response.message);
+                    } else {
+                        this.$message.error(this.response.message);
+                    }
+                }, 
                 //Data Operations End
                 handleCheckAllChange(val) {
 

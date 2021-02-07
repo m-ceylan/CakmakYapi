@@ -4,39 +4,12 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .avatar-uploader .el-upload {
-        border: 1px dashed #d9d9d9;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-    }
 
-        .avatar-uploader .el-upload:hover {
-            border-color: #409EFF;
-        }
-
-    .avatar-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        width: 178px;
-        height: 178px;
-        line-height: 178px;
-        text-align: center;
-    }
-
-    .avatar {
-        width: 178px;
-        height: 178px;
-        display: block;
-    }
-</style>
 
 <div class="content animated fadeIn" id="app">
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Hizmetler</h5>
+            <h5 class="card-title">Geri Bildirimler</h5>
             <div class="header-elements" v-if="isEditForm">
                 <div class="list-icons">
                     <button class="btn btn-outline-info  btn-sm"
@@ -52,9 +25,7 @@
             <div>
                 <template>
 
-                    <el-input clearable placeholder="ÖRN: Hizmetler" style="width:200px" size="small" v-model="filter.SearchTerm"></el-input>
-
-
+                    <el-input clearable placeholder="ÖRN: Geri Bildirim" style="width:200px" size="small" v-model="filter.SearchTerm"></el-input>
                     <el-button size="mini"
                                plain
                                type="info"
@@ -62,8 +33,6 @@
                         <i class="icon-search4 mr-2 "></i>
                         Detaylı Ara
                     </el-button>
-
-
                     <el-button v-if="filter.SearchTerm.length>0"
                                size="mini"
                                plain
@@ -83,16 +52,6 @@
                         <i class="icon-trash mr-2 "></i>
                         Seçilileri Sil
                     </el-button>
-
-
-                    <button class="btn btn-outline-info  btn-sm"
-                            v-if="!isEditForm"
-                            @@click="isEditForm=true"
-                            title="Ekle">
-                        <i class="icon-plus-circle2 mr-2 "></i>
-                        Ekle
-                    </button>
-
                 </template>
             </div>
 
@@ -105,21 +64,25 @@
                     <thead>
                         <tr>
                             <th class="width-50"> <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @@change="handleCheckAllChange"></el-checkbox></th>
-                            <th>Başlık</th>
-                            <th>Özet</th>
+                            <th>Email</th>
+                            <th>Ad</th>
+                            <th>Soyad</th>
+                            <th>Konu</th>
                             <th style="width:200px; text-align:center;">İşlemler</th>
 
                         </tr>
                     </thead>
                     <tbody>
-
-                        <tr v-for="item in items.filter(data => !filter.SearchTerm || data.title.toLowerCase().includes(filter.SearchTerm.toLowerCase()))" :key="item.id">
+                        <tr  v-for="item in items.filter(data => !filter.SearchTerm || data.email.toLowerCase().includes(filter.SearchTerm.toLowerCase()))" :key="item.id">
                             <td>
                                 <el-checkbox :label="item.id" v-model="selectedIDs" :key="item.id"><span></span></el-checkbox>
                             </td>
-                            <td>{{item.title}}</td>
+                            <td>{{item.email}}</td>
+                            <td>{{item.firstName}}</td>
+                            <td>{{item.lastName}}</td>
+                            <td>{{item.subject}}</td>
                             <td class="text-center">
-                                <button class="btn btn-outline-info  btn-sm" @@click="handleEdit(item)" title="Güncelle"><i class="icon-database-edit2"></i></button>
+                                <button class="btn btn-outline-info  btn-sm" @@click="handleShow(item)" title="Görüntüle"><i class="icon-eye"></i></button>
                                 <button class="btn btn-outline-danger btn-sm" @@click="confirmDelete(item)" title="Sil"><i class="icon-trash"></i></button>
                             </td>
                         </tr>
@@ -144,93 +107,52 @@
         </template>
         @* Table Template End *@
 
-        @* Edit Template Start *@
+        @* Show Template Start *@
+        
         <template v-else>
             <div class="row">
-                <div class="col-md-12">
-                    <div class="card-body form">
-                        <input autocomplete="false" name="hidden" type="text" style="display:none;">
+                <div class="col-md-12 form-group">
 
-                        <div class="row">
-                            <div class="form-group col-lg-2">
-                                <el-upload class="avatar-uploader"
-                                           action="https://jsonplaceholder.typicode.com/posts/"
-                                           :show-file-list="false"
-                                           :on-success="handleAvatarSuccess"
-                                           :before-upload="beforeAvatarUpload">
-                                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                </el-upload>
-                            </div>
-
-                            <div class="col-lg-12">
-                                <div class="form-group row">
-                                    <label> Başlık </label>
-                                    <el-input v-model="request.title"></el-input>
-                                    <span class="validation-error" v-if="response.validationErrors.some(x => x.key == 'Title')">{{ response.validationErrors.filter(x => x.key == 'Title')[0].value }}</span>
+                    <div class="card border-left-3 border-left-success rounded-left-0">
+                        <div class="card-body">
+                            <div class="d-sm-flex align-item-sm-center flex-sm-nowrap">
+                                <div>
+                                    <h6 class="font-weight-semibold">{{request.firstName}} {{request.lastName}}</h6>
+                                    <ul class="list list-unstyled mb-0">
+                                        <li>Email: {{request.email}}</li>
+                                        <li>Telefon: <span class="font-weight-semibold">{{request.phone}}</span></li>
+                                    </ul>
                                 </div>
 
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label> Fotoğraflar </label>
-                                <el-upload action="#"
-                                           list-type="picture-card"
-                                           :auto-upload="false"
-                                           multiple>
-                                    <i slot="default" class="el-icon-plus"></i>
-                                    <div slot="file" slot-scope="{file}">
-                                        <img class="el-upload-list__item-thumbnail"
-                                             :src="file.url" alt="">
-                                        <span class="el-upload-list__item-actions">
-                                            <span class="el-upload-list__item-preview"
-                                                  @@click="handlePictureCardPreview(file)">
-                                                <i class="el-icon-zoom-in"></i>
-                                            </span>
-                                            <span v-if="!disabled"
-                                                  class="el-upload-list__item-delete"
-                                                  @@click="handleDownload(file)">
-                                                <i class="el-icon-download"></i>
-                                            </span>
-                                            <span v-if="!disabled"
-                                                  class="el-upload-list__item-delete"
-                                                  @@click="handleRemove(file)">
-                                                <i class="el-icon-delete"></i>
-                                            </span>
-                                        </span>
-                                    </div>
-                                </el-upload>
-                                <el-dialog :visible.sync="dialogVisible">
-                                    <img width="100%" :src="dialogImageUrl" alt="">
-                                </el-dialog>
-
+                                <div class="text-sm-right mb-0 mt-3 mt-sm-0 ml-auto">
+                                    <h6 class="font-weight-semibold">{{request.createDate}}</h6>
+                                </div>
                             </div>
                         </div>
 
-
-
-
-                        <div class="text-right mt-3">
-                            <button v-if="updateID.replace(/\s/g, '').length > 0" type="submit" class="btn btn-outline-info " @@click="updateItem">
-                                <i class="icon-database-edit2 mr-2"></i>
-                                Güncelle
-
-                            </button>
-
-                            <button type="submit" v-else class="btn btn-outline-info " @@click="addItem">
-                                <i class="icon-plus-circle2 mr-2"></i>
-                                Ekle
-
-                            </button>
+                        <div class="card-footer d-sm-flex flex-column">
+                            <p>
+                                <span>
+                                    <span class="badge badge-mark border-success mr-2"></span>
+                                    Konu :
+                                    <span class="font-weight-semibold">{{request.subject}} </span>
+                                </span>
+                            </p>
+                            <p>
+                                <span>
+                                    <span class="badge badge-mark border-success mr-2"></span>
+                                    Mesaj :
+                                    <span class="font-weight-semibold">{{request.message}} </span>
+                                </span>
+                            </p>
                         </div>
-                    </div>
-
+                    </div> 
                 </div>
             </div>
         </template>
-        @* Edit Template End *@
+
+
+        @* Show Template End *@
     </div>
 </div>
 
@@ -255,7 +177,11 @@
                 checkAll: false,
                 request: {
                     id: null,
-                    title: ''
+                    email: '',
+                    firstName: '',
+                    lastName: '',
+                    subject: '',
+                    message:''
                 },
                 filter: {
                     Skip: 0,
@@ -300,7 +226,7 @@
                 },
                 //Data Operations Start
                 getData: async function () {
-                    var res = (await this.$service.post('catalogM/get', {
+                    var res = (await this.$service.post('feedBackM/get', {
                         ... this.filter,
                         Skip: (this.filter.CurrentPage * this.filter.Take) - this.filter.Take
                     }));
@@ -309,7 +235,7 @@
                     this.filter.TotalCount = res.data.data.totalCount;
                 },
                 addItem: async function () {
-                    this.response = (await this.$service.post('catalogM/add', this.request)).data;
+                    this.response = (await this.$service.post('feedBackM/add', this.request)).data;
                     if (!this.response.hasError) {
                         this.$message.success(this.response.message);
                         this.updateID = '';
@@ -326,7 +252,7 @@
                     }
                 },
                 updateItem: async function () {
-                    this.response = (await this.$service.post('catalogM/update', this.request)).data;
+                    this.response = (await this.$service.post('feedBackM/update', this.request)).data;
                     if (!this.response.hasError) {
                         this.$message.success(this.response.message);
                     } else {
@@ -340,7 +266,7 @@
                         cancelButtonText: 'Vazgeç',
                         type: 'warning'
                     }).then(async () => {
-                        this.response = (await this.$service.post('catalogM/delete', item)).data;
+                        this.response = (await this.$service.post('feedBackM/delete', item)).data;
                         if (!this.response.hasError) {
                             this.$message.success(this.response.message);
                             this.getData();
@@ -367,7 +293,7 @@
                             SelectedIDs: this.selectedIDs
                         };
 
-                        this.response = (await this.$service.post('catalogM/bulkDelete', request)).data;
+                        this.response = (await this.$service.post('feedBackM/bulkDelete', request)).data;
                         if (!this.response.hasError) {
                             this.$message.success(this.response.message);
                             this.selectedIDs = [];
@@ -392,7 +318,7 @@
                     this.isIndeterminate = false;
                 },
 
-                handleEdit(row) {
+                handleShow(row) {
                     this.updateID = row.id;
                     this.request = row;
                     this.isEditForm = true;
@@ -445,4 +371,4 @@
     </script>
 
 
-} 
+}

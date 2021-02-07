@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+    <title>Beta Yapı Admin Panel</title>
 
     <!-- Global stylesheets -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -77,7 +77,7 @@
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
-   AboutM
+  
     <script>
         Vue.prototype.$service = axios.create({
             /**/
@@ -86,7 +86,13 @@
             timeout: 10000,
             headers: {}
         });
-
+        Vue.prototype.$serviceFile = axios.create({
+            /**/
+            baseURL: 'http://localhost:5005/admin/',
+            /**/
+            timeout: 10000,
+            headers: { 'Content-Type': 'multipart/form-data'}
+        });
 
     </script>
 

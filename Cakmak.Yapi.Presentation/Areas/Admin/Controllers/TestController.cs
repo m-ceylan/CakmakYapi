@@ -7,17 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
 {
-    
-    public class HomeMController : BaseMController
+    public class TestController : BaseMController
     {
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Test()
-        {
-
             return View();
         }
     }

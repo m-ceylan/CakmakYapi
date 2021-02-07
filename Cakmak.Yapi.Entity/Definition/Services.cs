@@ -9,8 +9,8 @@ namespace Cakmak.Yapi.Entity.Definition
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Url { get; set; }
-        public List<string> Urls { get; set; } = new List<string>();
+        public string Image { get; set; }
+        public List<string> Images { get; set; } = new List<string>();
         public string Slug { get; set; }
     }
 }

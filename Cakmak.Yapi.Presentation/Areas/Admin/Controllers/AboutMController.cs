@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using Cakmak.Yapi.Entity.Application;
 using Cakmak.Yapi.Helpers;
 using Cakmak.Yapi.Models.Base.Response;
+using Cakmak.Yapi.Presentation.Areas.Admin.Code;
 using Cakmak.Yapi.Presentation.Areas.Admin.Models.Request;
 using Cakmak.Yapi.Presentation.Areas.Admin.Models.Request.AboutRequest;
+using Cakmak.Yapi.Presentation.Areas.Admin.Models.Request.ServicesRequest;
 using Cakmak.Yapi.Presentation.Areas.Admin.Models.Response.AboutResponse;
 using Cakmak.Yapi.Repository.Application;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +16,8 @@ using MongoDB.Driver.Linq;
 
 namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
 {
-    [Area("admin")]
-    [ValidateModel]
-    public class AboutMController : Controller
+    
+    public class AboutMController : BaseMController
     {
         private readonly AboutRepository repo;
 
@@ -31,7 +32,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
         }
         
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<LoadAboutResponse>>> GetAbouts([FromBody]LoadAboutRequest request)
+        public async Task<ActionResult<BaseResponse<LoadAboutResponse>>> Get([FromBody]LoadServicesRequest request)
         {
             var response = new BaseResponse<LoadAboutResponse>();
             response.Data = new LoadAboutResponse();
@@ -50,7 +51,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<AddAboutResponse>>> AddAbout([FromBody]AddAboutRequest request)
+        public async Task<ActionResult<BaseResponse<AddAboutResponse>>> Add([FromBody]AddServicesRequest request)
         {
             var response = new BaseResponse<AddAboutResponse>();
             response.Data = new AddAboutResponse();
@@ -67,7 +68,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<UpdateAboutResponse>>> UpdateAbout([FromBody]UpdateAboutRequest request)
+        public async Task<ActionResult<BaseResponse<UpdateAboutResponse>>> Update([FromBody]UpdateServicesRequest request)
         {
             var response = new BaseResponse<UpdateAboutResponse>();
 
@@ -84,7 +85,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<DeleteAboutResponse>>> DeleteAbout([FromBody]DeleteAboutRequest request)
+        public async Task<ActionResult<BaseResponse<DeleteAboutResponse>>> Delete([FromBody]DeleteServicesRequest request)
         {
             var response = new BaseResponse<DeleteAboutResponse>();
             response.Data = new DeleteAboutResponse();
@@ -100,7 +101,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<DeleteAboutResponse>>> BulkDeleteAbout([FromBody] BulkDeleteAboutRequest request)
+        public async Task<ActionResult<BaseResponse<DeleteAboutResponse>>> BulkDelete([FromBody] BulkDeleteServicesRequest request)
         {
             var response = new BaseResponse<DeleteAboutResponse>();
             await repo.DeleteManyAsync(Builders<About>.Filter.Where(x => request.SelectedIDs.Contains(x.Id)));
@@ -108,7 +109,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<bool>>> UpdateActiveAbout([FromBody] UpdateIsActiveAboutRequest request)
+        public async Task<ActionResult<BaseResponse<bool>>> UpdateActive([FromBody] UpdateIsActiveAboutRequest request)
         {
             var response = new BaseResponse<bool>();
 

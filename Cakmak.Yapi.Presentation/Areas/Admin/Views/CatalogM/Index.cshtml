@@ -1,4 +1,5 @@
-﻿
+﻿ 
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -36,7 +37,7 @@
 <div class="content animated fadeIn" id="app">
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Hizmetler</h5>
+            <h5 class="card-title">Kataloglar</h5>
             <div class="header-elements" v-if="isEditForm">
                 <div class="list-icons">
                     <button class="btn btn-outline-info  btn-sm"
@@ -52,7 +53,7 @@
             <div>
                 <template>
 
-                    <el-input clearable placeholder="ÖRN: Hizmetler" style="width:200px" size="small" v-model="filter.SearchTerm"></el-input>
+                    <el-input clearable placeholder="ÖRN: Kataloglar" style="width:200px" size="small" v-model="filter.SearchTerm"></el-input>
 
 
                     <el-button size="mini"
@@ -106,7 +107,6 @@
                         <tr>
                             <th class="width-50"> <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @@change="handleCheckAllChange"></el-checkbox></th>
                             <th>Başlık</th>
-                            <th>Özet</th>
                             <th style="width:200px; text-align:center;">İşlemler</th>
 
                         </tr>
@@ -163,7 +163,7 @@
                                 </el-upload>
                             </div>
 
-                            <div class="col-lg-12">
+                            <div class="col-lg-10">
                                 <div class="form-group row">
                                     <label> Başlık </label>
                                     <el-input v-model="request.title"></el-input>
@@ -172,46 +172,7 @@
 
                             </div>
 
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label> Fotoğraflar </label>
-                                <el-upload action="#"
-                                           list-type="picture-card"
-                                           :auto-upload="false"
-                                           multiple>
-                                    <i slot="default" class="el-icon-plus"></i>
-                                    <div slot="file" slot-scope="{file}">
-                                        <img class="el-upload-list__item-thumbnail"
-                                             :src="file.url" alt="">
-                                        <span class="el-upload-list__item-actions">
-                                            <span class="el-upload-list__item-preview"
-                                                  @@click="handlePictureCardPreview(file)">
-                                                <i class="el-icon-zoom-in"></i>
-                                            </span>
-                                            <span v-if="!disabled"
-                                                  class="el-upload-list__item-delete"
-                                                  @@click="handleDownload(file)">
-                                                <i class="el-icon-download"></i>
-                                            </span>
-                                            <span v-if="!disabled"
-                                                  class="el-upload-list__item-delete"
-                                                  @@click="handleRemove(file)">
-                                                <i class="el-icon-delete"></i>
-                                            </span>
-                                        </span>
-                                    </div>
-                                </el-upload>
-                                <el-dialog :visible.sync="dialogVisible">
-                                    <img width="100%" :src="dialogImageUrl" alt="">
-                                </el-dialog>
-
-                            </div>
-                        </div>
-
-
-
-
+                        </div> 
                         <div class="text-right mt-3">
                             <button v-if="updateID.replace(/\s/g, '').length > 0" type="submit" class="btn btn-outline-info " @@click="updateItem">
                                 <i class="icon-database-edit2 mr-2"></i>

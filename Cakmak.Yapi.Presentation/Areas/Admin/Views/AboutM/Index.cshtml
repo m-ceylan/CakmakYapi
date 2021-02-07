@@ -213,7 +213,7 @@
             methods: {
                 //Data Operations Start
                 getData: async function () {
-                    var res = (await this.$service.post('aboutM/getAbouts', {
+                    var res = (await this.$service.post('aboutM/get', {
                         ... this.filter,
                         Skip: (this.filter.CurrentPage * this.filter.Take) - this.filter.Take
                     }));
@@ -222,7 +222,7 @@
                     this.filter.TotalCount = res.data.data.totalCount;
                 },
                 addItem: async function () {
-                    this.response = (await this.$service.post('aboutM/addAbout', this.request)).data;
+                    this.response = (await this.$service.post('aboutM/add', this.request)).data;
                     if (!this.response.hasError) {
                         this.$message.success(this.response.message);
                         this.updateID = '';
@@ -240,7 +240,7 @@
 
                 },
                 updateItem: async function () {
-                    this.response = (await this.$service.post('aboutM/updateAbout', this.request)).data;
+                    this.response = (await this.$service.post('aboutM/update', this.request)).data;
                     if (!this.response.hasError) {
                         this.$message.success(this.response.message);
                     } else {
@@ -254,7 +254,7 @@
                         cancelButtonText: 'Vazgeç',
                         type: 'warning'
                     }).then(async () => {
-                        this.response = (await this.$service.post('aboutM/deleteAbout', item)).data;
+                        this.response = (await this.$service.post('aboutM/delete', item)).data;
                         if (!this.response.hasError) {
                             this.$message.success(this.response.message);
                             this.getData();
@@ -281,7 +281,7 @@
                             SelectedIDs: this.aboutIDs
                         };
 
-                        this.response = (await this.$service.post('aboutM/bulkDeleteAbout', request)).data;
+                        this.response = (await this.$service.post('aboutM/bulkDelete', request)).data;
                         if (!this.response.hasError) {
                             this.$message.success(this.response.message);
                             this.aboutIDs = [];
@@ -310,7 +310,7 @@
                             IsActive: !item.isActive
                         };
 
-                        this.response = (await this.$service.post('aboutM/updateActiveAbout', request)).data;
+                        this.response = (await this.$service.post('aboutM/updateActive', request)).data;
                         if (!this.response.hasError) {
                             this.$message.success(this.response.message);
                         } else {
