@@ -108,7 +108,6 @@
                             <th>Başlık</th>
                             <th>Özet</th>
                             <th style="width:200px; text-align:center;">İşlemler</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -252,6 +251,8 @@
     </div>
 </div>
 
+ 
+
 @section Scripts{
 
     <script>
@@ -308,7 +309,7 @@
                    this.fileT = file;
                    let formData = new FormData();
 
-                   formData.append('image', this.fileT.raw);
+                   formData.append('image', this.fileT);
 
                    axios.post('http://localhost:5005/admin/fileUpload/fTPFileUpload',
                        formData,
@@ -347,6 +348,8 @@
                 },
                 //Data Operations Start
                 getData: async function () {
+
+                    debugger;
                     var res = (await this.$service.post('servicesM/get', {
                         ... this.filter,
                         Skip: (this.filter.CurrentPage * this.filter.Take) - this.filter.Take
@@ -358,19 +361,28 @@
                 addItem: async function () {
                     debugger; 
 
-                    var list = this.$refs.upload.uploadFiles;
+                    
+                    let collection = new FormData();
 
+                    for (var i = 0; i < this.$refs.upload.uploadFiles.length; i++) {
+                        let file = this.$refs.upload.uploadFiles[i];
 
-                    axios.post('http://localhost:5005/admin/servicesM/add', list,
-                        {
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            }
-                        }).then(response => {
-                            alert(response.data);
-                        }).catch(error => {
-                            console.log(error);
+                        collection.append('files[' + i + ']', file.raw, 'files[' + i + '].jpg');
+                    }
+                    
+
+                    axios.post('http://localhost:5005/admin/customFileUpload/FTPFileUpload', collection, {
+                        headers: {    }
+                    }
+                    ).then(function (response) {
+                        console.log(response);
+                        console.log("ok");
+                    })
+                        .catch(function () {
+                            console.log("error")
                         });
+
+                     
 
                     //this.response = (await this.$service.post('servicesM/add', this.request )).data;
                     //if (!this.response.hasError) {
@@ -399,6 +411,7 @@
 
                 },
                 confirmDelete(item) {
+                    
                     this.$confirm('Bu kaydı silmek istediğine emin misin?', 'Uyarı', {
                         confirmButtonText: 'Evet',
                         cancelButtonText: 'Vazgeç',
@@ -447,10 +460,6 @@
                         });
                     });
 
-
-
-
-
                 },
                 changeIsActive: async function (item) {
                     debugger;
@@ -489,7 +498,6 @@
 
 
             },
-
             async beforeMount() {
                 this.getData();
 
@@ -521,8 +529,6 @@
 
             }
         });
-
-
 
     </script>
 

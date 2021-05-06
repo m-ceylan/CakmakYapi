@@ -53,30 +53,20 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<AddServicesResponse>>> Add()
+        public async Task<ActionResult<BaseResponse<AddServicesResponse>>> Add( IFormFileCollection formFiles)
         {
-            try
-            {
-                var a = Request.Form.Files.Count > 0 ? Request.Form.Files[0] : null;
-            }
-            catch (Exception ex)
-            {
 
-                throw new Exception(ex.ToString());
-            }
-
-
-            //var formCollection = await Request.ReadFormAsync();
-            //var file = formCollection.Files.First();
            
 
+
+            
             var response = new BaseResponse<AddServicesResponse>();
             //response.Data = new AddServicesResponse();
             //var item = new Services
             //{
             //    Title = request.Title,
             //    Description = request.Description,
-            //    Slug = request.Title.ToUrlSlug()  
+            //    Slug = request.Title.ToUrlSlug()
             //};
 
             //await repo.AddAsync(item);
