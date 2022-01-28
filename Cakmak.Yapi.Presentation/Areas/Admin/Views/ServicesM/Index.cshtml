@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
@@ -121,7 +120,7 @@
                             <td>
                                 {{item.description}}
                             </td>
-                          
+
 
                             <td class="text-center">
                                 <button class="btn btn-outline-info  btn-sm" @@click="handleEdit(item)" title="Güncelle"><i class="icon-database-edit2"></i></button>
@@ -195,8 +194,7 @@
                                            :auto-upload="false"
                                            multiple
                                            ref="upload"
-                                           :file-list="filesTest"
-                                           >
+                                           :file-list="filesTest">
                                     <i slot="default" class="el-icon-plus"></i>
                                     <div slot="file" slot-scope="{file}">
                                         <img class="el-upload-list__item-thumbnail"
@@ -220,7 +218,7 @@
                                     </div>
                                 </el-upload>
                                 <el-dialog :visible.sync="dialogVisible">
-                                    <img width="100%" :src="dialogImageUrl" alt="">
+                                    <img width="100" :src="dialogImageUrl" alt="">
                                 </el-dialog>
 
                             </div>
@@ -251,286 +249,285 @@
     </div>
 </div>
 
- 
+
 
 @section Scripts{
 
-    <script>
+<script>
 
-        var app = new Vue({
-            el: '#app',
-            data: {
-                fileT:'',
-                filesTest:[],
-                dialogImageUrl: '',
-                dialogVisible: false,
-                disabled: false,
-                imageUrl: '',
-                url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                items: [],
-                search: '',
-                updateID: '',
-                isEditForm: false,
-                selectedIDs: [],
-                isIndeterminate: true,
-                checkAll: false,
-                request: {
-                    id: null,
-                    title: '',
-                    description: '',
-                    denedim: null
-                },
-                filter: {
-                    Skip: 0,
-                    Take: 10,
-                    Page: 1,
-                    TotalCount: 0,
-                    CurrentPage: 1,
-                    SearchTerm: ''
-                },
-                response: {
-                    validationErrors: [],
-                    Data: null
-                },
-                lock: true,
-                search: ''
+    var app = new Vue({
+        el: '#app',
+        data: {
+            fileT:'',
+            filesTest:[],
+            dialogImageUrl: '',
+            dialogVisible: false,
+            disabled: false,
+            imageUrl: '',
+            url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+            items: [],
+            search: '',
+            updateID: '',
+            isEditForm: false,
+            selectedIDs: [],
+            isIndeterminate: true,
+            checkAll: false,
+            request: {
+                id: null,
+                title: '',
+                description: '',
+                collection: null
             },
-            methods: {
+            filter: {
+                Skip: 0,
+                Take: 10,
+                Page: 1,
+                TotalCount: 0,
+                CurrentPage: 1,
+                SearchTerm: ''
+            },
+            response: {
+                validationErrors: [],
+                Data: null
+            },
+            lock: true,
+            search: ''
+        },
+        methods: {
 
-                handleRemove(file) {
-                    console.log(file);
-                },
-                handlePictureCardPreview(file) {
-                    this.dialogImageUrl = file.url;
-                    this.dialogVisible = true;
-                },
-               async handleDownload(file) {
-                   debugger;
-                   this.fileT = file;
-                   let formData = new FormData();
+            handleRemove(file) {
+                console.log(file);
+            },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
+           async handleDownload(file) {
+               debugger;
+               this.fileT = file;
+               let formData = new FormData();
 
-                   formData.append('image', this.fileT);
+               formData.append('image', this.fileT);
 
-                   axios.post('http://localhost:5005/admin/fileUpload/fTPFileUpload',
-                       formData,
-                       {
-                           headers: {
-                               'Content-Type': 'multipart/form-data'
-                           }
+               axios.post('http://localhost:5005/admin/fileUpload/fTPFileUpload',
+                   formData,
+                   {
+                       headers: {
+                           'Content-Type': 'multipart/form-data'
                        }
-                   ).then(function () {
-                       console.log('SUCCESS!!');
-                   })
-                       .catch(function () {
-                           console.log('FAILURE!!');
-                       });
-                   //var formData = new FormData();
-                   //var list = this.$refs.upload.uploadFiles[0];
-                   //formData.append("file", list);
+                   }
+               ).then(function () {
+                   console.log('SUCCESS!!');
+               })
+                   .catch(function () {
+                       console.log('FAILURE!!');
+                   });
+               //var formData = new FormData();
+               //var list = this.$refs.upload.uploadFiles[0];
+               //formData.append("file", list);
 
-                   //this.response = (await this.$serviceFile.post('servicesM/add', formData)).data;
-                   // console.log(file);
-                },
-                handleAvatarSuccess(res, file) {
-                    this.imageUrl = URL.createObjectURL(file.raw);
-                },
-                beforeAvatarUpload(file) {
-                    const isJPG = file.type === 'image/jpeg';
-                    const isLt2M = file.size / 1024 / 1024 < 2;
+               //this.response = (await this.$serviceFile.post('servicesM/add', formData)).data;
+               // console.log(file);
+            },
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
 
-                    if (!isJPG) {
-                        this.$message.error('Avatar picture must be JPG format!');
-                    }
-                    if (!isLt2M) {
-                        this.$message.error('Avatar picture size can not exceed 2MB!');
-                    }
-                    return isJPG && isLt2M;
-                },
-                //Data Operations Start
-                getData: async function () {
+                if (!isJPG) {
+                    this.$message.error('Avatar picture must be JPG format!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('Avatar picture size can not exceed 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            //Data Operations Start
+            getData: async function () {
 
-                    debugger;
-                    var res = (await this.$service.post('servicesM/get', {
-                        ... this.filter,
-                        Skip: (this.filter.CurrentPage * this.filter.Take) - this.filter.Take
-                    }));
+                debugger;
+                var res = (await this.$service.post('servicesM/get', {
+                    ... this.filter,
+                    Skip: (this.filter.CurrentPage * this.filter.Take) - this.filter.Take
+                }));
 
-                    this.items = res.data.data.items;
-                    this.filter.TotalCount = res.data.data.totalCount;
-                },
-                addItem: async function () {
-                    debugger; 
+                this.items = res.data.data.items;
+                this.filter.TotalCount = res.data.data.totalCount;
+            },
+            addItem: async function () {
+                debugger;
 
-                    
-                    let collection = new FormData();
 
-                    for (var i = 0; i < this.$refs.upload.uploadFiles.length; i++) {
-                        let file = this.$refs.upload.uploadFiles[i];
+                var formData = new FormData();
 
-                        collection.append('files[' + i + ']', file.raw, 'files[' + i + '].jpg');
-                    }
-                    
+                for (var i = 0; i < this.$refs.upload.uploadFiles.length; i++) {
+                    let file = this.$refs.upload.uploadFiles[i];
 
-                    axios.post('http://localhost:5005/admin/customFileUpload/FTPFileUpload', collection, {
-                        headers: {    }
-                    }
-                    ).then(function (response) {
-                        console.log(response);
-                        console.log("ok");
+                    formData.append('files[' + i + ']', file.raw, 'files[' + i + '].jpg');
+                }
+                formData.append('title', this.request.title);
+                formData.append('description', this.request.description);
+
+                var message=null;
+
+                  var base_url = window.location.origin;
+                axios({
+                      method: "post",
+                      url: base_url+"/admin/servicesM/add",
+                      data: formData,
+                      headers: { "Content-Type": "multipart/form-data" },
                     })
-                        .catch(function () {
-                            console.log("error")
-                        });
+                      .then(function (response) {
+                         message =response.data; 
+                      });
+                      
+                       
+                            this.$message.success('Kayıt Eklendi');
 
-                     
+                            this.updateID = '';
+                            this.isEditForm = false;
+                            this.request.id = this.response.data.id;
+                            this.request = {
+                                id: null,
+                                title: '',
+                                description:''
+                            };
 
-                    //this.response = (await this.$service.post('servicesM/add', this.request )).data;
-                    //if (!this.response.hasError) {
-                    //    this.$message.success(this.response.message);
-                    //    this.updateID = '';
-                    //    this.isEditForm = false;
-                    //    this.request.id = this.response.data.id;
-                    //    this.items.unshift(this.request);
-                    //    this.request = {
-                    //        id: null,
-                    //        title: ''
-                    //    };
+                            
 
-                    //} else {
-                    //    this.$message.error(this.response.message);
-                    //}
 
-                },
-                updateItem: async function () {
-                    this.response = (await this.$service.post('servicesM/update', this.request)).data;
+            },
+            updateItem: async function () {
+                this.response = (await this.$service.post('servicesM/update', this.request)).data;
+                if (!this.response.hasError) {
+                    this.$message.success(this.response.message);
+                } else {
+                    this.$message.error(this.response.message);
+                }
+
+            },
+            confirmDelete(item) {
+
+                this.$confirm('Bu kaydı silmek istediğine emin misin?', 'Uyarı', {
+                    confirmButtonText: 'Evet',
+                    cancelButtonText: 'Vazgeç',
+                    type: 'warning'
+                }).then(async () => {
+                    this.response = (await this.$service.post('servicesM/delete', item)).data;
                     if (!this.response.hasError) {
                         this.$message.success(this.response.message);
+                        this.getData();
                     } else {
                         this.$message.error(this.response.message);
                     }
 
-                },
-                confirmDelete(item) {
-                    
-                    this.$confirm('Bu kaydı silmek istediğine emin misin?', 'Uyarı', {
-                        confirmButtonText: 'Evet',
-                        cancelButtonText: 'Vazgeç',
-                        type: 'warning'
-                    }).then(async () => {
-                        this.response = (await this.$service.post('servicesM/delete', item)).data;
-                        if (!this.response.hasError) {
-                            this.$message.success(this.response.message);
-                            this.getData();
-                        } else {
-                            this.$message.error(this.response.message);
-                        }
 
-
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: 'Vazgeçildi'
-                        });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Vazgeçildi'
                     });
-                },
-                bulkDetelete: async function () {
+                });
+            },
+            bulkDetelete: async function () {
 
-                    this.$confirm('Seçili kayıtları silmek istediğine emin misin?', 'Uyarı', {
-                        confirmButtonText: 'Evet',
-                        cancelButtonText: 'Vazgeç',
-                        type: 'warning'
-                    }).then(async () => {
-                        var request = {
-                            SelectedIDs: this.selectedIDs
-                        };
-
-                        this.response = (await this.$service.post('servicesM/bulkDelete', request)).data;
-                        if (!this.response.hasError) {
-                            this.$message.success(this.response.message);
-                            this.selectedIDs = [];
-                            this.getData();
-                        } else {
-                            this.$message.error(this.response.message);
-                        }
-
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: 'Vazgeçildi'
-                        });
-                    });
-
-                },
-                changeIsActive: async function (item) {
-                    debugger;
-
+                this.$confirm('Seçili kayıtları silmek istediğine emin misin?', 'Uyarı', {
+                    confirmButtonText: 'Evet',
+                    cancelButtonText: 'Vazgeç',
+                    type: 'warning'
+                }).then(async () => {
                     var request = {
-                        Id: item.id,
-                        IsActive: !item.isActive
+                        SelectedIDs: this.selectedIDs
                     };
 
-                    this.response = (await this.$service.post('servicesM/updateActive', request)).data;
+                    this.response = (await this.$service.post('servicesM/bulkDelete', request)).data;
                     if (!this.response.hasError) {
                         this.$message.success(this.response.message);
+                        this.selectedIDs = [];
+                        this.getData();
                     } else {
                         this.$message.error(this.response.message);
                     }
-                }, 
-                //Data Operations End
-                handleCheckAllChange(val) {
 
-                    this.selectedIDs = val ? this.items.map(k => k.id) : [];
-                    this.isIndeterminate = false;
-                },
-
-                handleEdit(row) {
-                    this.updateID = row.id;
-                    this.request = row;
-                    this.isEditForm = true;
-                },
-                handleDelete(index, row) {
-                    this.confirmDelete();
-                },
-
-                currentPageChanged() {
-                    //window.scrollToTop();
-                },
-
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Vazgeçildi'
+                    });
+                });
 
             },
-            async beforeMount() {
-                this.getData();
+            changeIsActive: async function (item) {
+                debugger;
 
+                var request = {
+                    Id: item.id,
+                    IsActive: !item.isActive
+                };
+
+                this.response = (await this.$service.post('servicesM/updateActive', request)).data;
+                if (!this.response.hasError) {
+                    this.$message.success(this.response.message);
+                } else {
+                    this.$message.error(this.response.message);
+                }
             },
-            mounted() {
-                setTimeout(() => {
-                    this.lock = false;
-                }, 2000)
+            //Data Operations End
+            handleCheckAllChange(val) {
+
+                this.selectedIDs = val ? this.items.map(k => k.id) : [];
+                this.isIndeterminate = false;
             },
-            watch: {
-                'filter.Page': {
-                    handler: function () {
-                        this.getData();
-                    }
-                },
-                'filter.CurrentPage': {
-                    handler: function () {
-                        this.getData();
-                    }
-                },
-                'selectedIDs': function () {
-                    let checkedCount = this.selectedIDs.length;
-                    this.checkAll = checkedCount === this.items.length;
-                    this.isIndeterminate = checkedCount > 0 && checkedCount < this.items.length;
-                },
 
+            handleEdit(row) {
+                this.updateID = row.id;
+                this.request = row;
+                this.isEditForm = true;
             },
-            computed: {
+            handleDelete(index, row) {
+                this.confirmDelete();
+            },
 
-            }
-        });
+            currentPageChanged() {
+                //window.scrollToTop();
+            },
 
-    </script>
+
+        },
+        async beforeMount() {
+            this.getData();
+
+        },
+        mounted() {
+            setTimeout(() => {
+                this.lock = false;
+            }, 2000)
+        },
+        watch: {
+            'filter.Page': {
+                handler: function () {
+                    this.getData();
+                }
+            },
+            'filter.CurrentPage': {
+                handler: function () {
+                    this.getData();
+                }
+            },
+            'selectedIDs': function () {
+                let checkedCount = this.selectedIDs.length;
+                this.checkAll = checkedCount === this.items.length;
+                this.isIndeterminate = checkedCount > 0 && checkedCount < this.items.length;
+            },
+        },
+        computed: {
+
+        }
+    });
+
+</script>
 
 
 } 

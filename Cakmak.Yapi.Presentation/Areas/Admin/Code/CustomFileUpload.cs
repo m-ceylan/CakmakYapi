@@ -27,8 +27,6 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Code
         [HttpPost]
         public string FTPFileUpload()
         {
-            //UpLoadImage();
-            var c = "";
             try
             {
                 var a = Request.Form.Files;
@@ -69,10 +67,9 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Code
 
 
             }
-            catch (Exception ex)
+            catch (WebException e)
             {
-                c = ex.Message;
-
+                String status = ((FtpWebResponse)e.Response).StatusDescription;
             }
 
 

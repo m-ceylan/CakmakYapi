@@ -79,9 +79,11 @@
 
   
     <script>
+        var base_url = window.location.origin;
+
         Vue.prototype.$service = axios.create({
             /**/
-            baseURL: 'http://localhost:5005/admin/',
+            baseURL: base_url + '/admin/',
             /**/
             timeout: 10000,
             headers: {}

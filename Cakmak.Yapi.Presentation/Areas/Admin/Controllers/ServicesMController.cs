@@ -17,8 +17,6 @@ using MongoDB.Driver.Linq;
 
 namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
 {
-    [Produces("application/json")]
-    [Route("admin/[controller]/[action]")]
     public class ServicesMController : BaseMController
     {
         private readonly ServicesRepository repo;
@@ -33,7 +31,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return View();
         }
 
-       
+
         [HttpPost]
         public async Task<ActionResult<BaseResponse<LoadServicesResponse>>> Get([FromBody] LoadServicesRequest request)
         {
@@ -53,26 +51,36 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<AddServicesResponse>>> Add( IFormFileCollection formFiles)
+        public async Task<ActionResult<BaseResponse<AddServicesResponse>>> Add()
         {
-
-           
-
-
-            
             var response = new BaseResponse<AddServicesResponse>();
-            //response.Data = new AddServicesResponse();
-            //var item = new Services
-            //{
-            //    Title = request.Title,
-            //    Description = request.Description,
-            //    Slug = request.Title.ToUrlSlug()
-            //};
+            var request = new AddServicesRequest();
+            try
+            {
+                var formData = Request.Form?.Files;
+                request.Title = Request.Form.Keys.Any(x => x == "title") ? 
+                    Request.Form["title"].ToString() : "";
 
-            //await repo.AddAsync(item);
-            //response.SetMessage("Kayıt başarıyla eklendi");
+                request.Description = Request.Form.Keys.Any(x => x == "description") ? 
+                    Request.Form["description"].ToString() : "";
+            }
+            catch (Exception ex)
+            {
+                return Ok();
+            }
 
-            //response.Data.Id = item.Id;
+            response.Data = new AddServicesResponse();
+            var item = new Services
+            {
+                Title = request.Title,
+                Description = request.Description,
+                Slug = request.Title.ToUrlSlug()
+            };
+
+            await repo.AddAsync(item);
+            response.SetMessage("Kayıt başarıyla eklendi");
+
+            response.Data.Id = item.Id;
 
             return Ok(response);
         }
@@ -112,13 +120,13 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<DeleteServicesResponse>>> BulkDelete([FromBody]BulkDeleteServicesRequest request)
+        public async Task<ActionResult<BaseResponse<DeleteServicesResponse>>> BulkDelete([FromBody] BulkDeleteServicesRequest request)
         {
             var response = new BaseResponse<DeleteServicesResponse>();
             await repo.DeleteManyAsync(Builders<Services>.Filter.Where(x => request.SelectedIDs.Contains(x.Id)));
             response.SetMessage("Seçili öğeler başarıyla silindi");
             return Ok(response);
         }
-       
+
     }
 }
