@@ -10,6 +10,7 @@ using Cakmak.Yapi.Presentation.Areas.Admin.Models.Request;
 using Cakmak.Yapi.Presentation.Areas.Admin.Models.Request.ServicesRequest;
 using Cakmak.Yapi.Presentation.Areas.Admin.Models.Response.ServicesResponse;
 using Cakmak.Yapi.Repository.Definition;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
@@ -47,7 +48,6 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             response.Data.TotalCount = await query.CountAsync();
             response.Data.Items = await query.OrderByDescending(x => x.CreateDate).Skip(request.Skip).Take(request.Take).ToListAsync();
 
-
             return Ok(response);
         }
         [HttpPost]
@@ -55,26 +55,36 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
         {
             var response = new BaseResponse<AddServicesResponse>();
             var request = new AddServicesRequest();
-            try
-            {
-                var formData = Request.Form?.Files;
-                request.Title = Request.Form.Keys.Any(x => x == "title") ? 
-                    Request.Form["title"].ToString() : "";
 
-                request.Description = Request.Form.Keys.Any(x => x == "description") ? 
-                    Request.Form["description"].ToString() : "";
-            }
-            catch (Exception ex)
-            {
-                return Ok();
-            }
+            request.Title = Request.Form.Keys.Any(x => x == "title") ?
+                Request.Form["title"].ToString() : "";
+
+            request.Description = Request.Form.Keys.Any(x => x == "description") ?
+                Request.Form["description"].ToString() : "";
+
+            request.HeaderImageUrl = Request.Form.Keys.Any(x => x == "headerImageUrl") ?
+               Request.Form["headerImageUrl"].ToString() : "";
+
+            var images = Request.Form?.Files;
+            CustomFileUpload customFileUpload = new();
+            var addImages = customFileUpload.UpLoadImage(
+                 new Models.Request.FileUploadRequest.ImageUploadRequest()
+                 {
+                     Collection = images,
+                     ContentCategory = Core.Enums.Enums.UploadFolder.Services,
+                     ContentType = Core.Enums.Enums.UploadFolder.Body,
+                     ImageFolderName = request.Title.ToUrlSlug()
+                 });
+
 
             response.Data = new AddServicesResponse();
             var item = new Services
             {
                 Title = request.Title,
                 Description = request.Description,
-                Slug = request.Title.ToUrlSlug()
+                Slug = request.Title.ToUrlSlug(),
+                HeadImageUrl = request.HeaderImageUrl,
+                Images = addImages.Items,
             };
 
             await repo.AddAsync(item);
@@ -126,6 +136,22 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             await repo.DeleteManyAsync(Builders<Services>.Filter.Where(x => request.SelectedIDs.Contains(x.Id)));
             response.SetMessage("Seçili öğeler başarıyla silindi");
             return Ok(response);
+        }
+
+        [HttpPost]
+        public string AddHeaderPhoto()
+        {
+            var images = Request.Form?.Files;
+
+            CustomFileUpload customFileUpload = new();
+            var addImages = customFileUpload.UpLoadImage(
+                 new Models.Request.FileUploadRequest.ImageUploadRequest()
+                 {
+                     Collection = images,
+                     ContentCategory = Core.Enums.Enums.UploadFolder.Services,
+                     ContentType = Core.Enums.Enums.UploadFolder.Head,
+                 });
+            return addImages.Items[0].Url;
         }
 
     }

@@ -1,4 +1,6 @@
 ﻿
+using Cakmak.Yapi.Core.Entity;
+using Cakmak.Yapi.Core.Extensions;
 using Cakmak.Yapi.Models.Base.Response;
 using Cakmak.Yapi.Presentation.Areas.Admin.Models.Request.FileUploadRequest;
 using Cakmak.Yapi.Presentation.Areas.Admin.Models.Response.FileUploadResponse;
@@ -18,20 +20,15 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Code
 {
     public class CustomFileUpload : BaseMController
     {
-        private readonly IHostingEnvironment env;
 
-        public CustomFileUpload(IHostingEnvironment env)
-        {
-            this.env = env;
-        }
         [HttpPost]
-        public string FTPFileUpload()
+        public string FTPFileUpload(IFormFileCollection collection)
         {
             try
             {
-                var a = Request.Form.Files;
 
-                string FTPDosyaYolu = "ftp://94.73.170.187//httpdocs/wwwroot/files";
+
+                string FTPDosyaYolu = "ftp://94.73.170.187/ImageDeneme";
                 FtpWebRequest request = (FtpWebRequest)FtpWebRequest.Create(FTPDosyaYolu);
 
                 string username = "u9481094";
@@ -47,7 +44,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Code
 
                 using (var ms = new MemoryStream())
                 {
-                    a[0].CopyTo(ms);
+                    collection[0].CopyTo(ms);
                     fileContents = ms.ToArray();
                 }
 
@@ -73,55 +70,83 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Code
             }
 
 
-            return c;
+            return "";
 
         }
-
-
-        public BaseResponse<ImageUploadResponse> UpLoadImage(ImageUploadRequest imageRequest )
+        public ImageUploadResponse UpLoadImage(ImageUploadRequest imageRequest)
         {
- 
-            var response = new BaseResponse<ImageUploadResponse>();
-            response.Data = new ImageUploadResponse();
 
-            string imageCategory = string.Empty;
-            string imageType = string.Empty;
-            switch (imageRequest.ContentCategory)
+            if (!imageRequest.Collection.Any())
+                return null;
+
+            var response = new ImageUploadResponse();
+
+            string rootPath = Cakmak.Yapi.Core.Constant.rootPath;
+            string imagesPath = Cakmak.Yapi.Core.Constant.imagesPath;
+
+            string imgUrl = $"/{imagesPath}/{imageRequest.ContentCategory.GetEnumDisplayName()}";
+
+            ExistDirectory(rootPath+imgUrl);
+
+            imgUrl += $"/{imageRequest.ContentType.GetEnumDisplayName()}";
+
+            ExistDirectory(rootPath+imgUrl);
+
+            imgUrl += $"/{imageRequest.ImageFolderName}";
+
+            ExistDirectory(rootPath+imgUrl);
+
+            var urls = ImageCollectionCopy(imageRequest, imgUrl);
+
+            for (int i = 0; i < urls.Count; i++)
             {
-                case Core.Enums.Enums.UploadFolder.Services:
-                    imageCategory = "services";
-                    break;
-            }
-            switch (imageRequest.ContentType)
-            {
-                case Core.Enums.Enums.UploadFolder.Head:
-                    imageType = "header";
-                    break;
-                case Core.Enums.Enums.UploadFolder.Body:
-                    imageType = "body";
-                    break;
-            }
-
-
-
-            var a = Request.Form.Files[0];
-            string imageExtension = Path.GetExtension(a.FileName);
-
-            if (imageExtension!="jpg" || imageExtension != "jpeg" || imageExtension != "png")
-            {
-
-            }
-
-            string imageName = Guid.NewGuid() + imageExtension;
-           
-            string imgUrl = $"content/images/{imageCategory}/{imageType}/{imageName}";
-            string path = Path.Combine(env.WebRootPath, imgUrl);
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                a.CopyTo(stream);
+                response.Items.Add(
+                    new ImageFile
+                    {
+                        Url = urls[i],
+                        OrderNo = i + 1,
+                        Type = imageRequest.ContentType,
+                        IsActive = true,
+                    });
             }
 
-            return null;
+            return response;
         }
+
+        private List<string> ImageCollectionCopy(ImageUploadRequest imageRequest, string imgUrl)
+        {
+            List<string> imagesUrls = new();
+            string path = string.Empty;
+            foreach (var item in imageRequest.Collection)
+            {
+                string imageExtension = Path.GetExtension(item.FileName);
+
+                if (imageExtension != Cakmak.Yapi.Core.Constant.JPG_EXTENSION &&
+                    imageExtension != Cakmak.Yapi.Core.Constant.JPEG_EXTENSION &&
+                    imageExtension != Cakmak.Yapi.Core.Constant.PNG_EXTENSION)
+                {
+                    continue;
+                }
+
+                string imageName = Guid.NewGuid() + imageExtension;
+                path = $"{Cakmak.Yapi.Core.Constant.rootPath}{imgUrl}/{imageName}";
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    item.CopyTo(stream);
+                }
+                imagesUrls.Add($"{imgUrl}/{imageName}");
+            }
+
+            return imagesUrls;
+        }
+
+        void ExistDirectory(string path)
+        {
+            if (Directory.Exists(path)) return;
+
+            Directory.CreateDirectory(path);
+
+        }
+
     }
 }

@@ -12,6 +12,6 @@ namespace Cakmak.Yapi.Entity.Definition
         public List<string> ServicesIDs { get; set; } = new List<string>();
         public string Slug { get; set; }
         public string Url { get; set; }
-        public List<string> Urls { get; set; } = new List<string>();
+        public List<string> ImageUrls { get; set; } = new List<string>();
     }
 }

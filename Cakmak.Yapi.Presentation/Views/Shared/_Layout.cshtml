@@ -27,13 +27,13 @@
     <link href="icon/apple-touch-icon-48-precomposed.png" rel="apple-touch-icon-precomposed" sizes="48x48">
     <link href="icon/apple-touch-icon-32-precomposed.png" rel="apple-touch-icon-precomposed">
     <link href="icon/favicon.png" rel="shortcut icon">
-
-
-
-
+      <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 
 </head>
 <body>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <section class="loading-overlay">
         <div class="Loading-Page">
             <h2 class="loader">Loading</h2>
@@ -43,8 +43,8 @@
     <div class="site-wrapper ">
 
         @await Component.InvokeAsync("Header")
+
         @RenderBody()
-        <!-- Slider -->
         <!-- Footer -->
         @await Component.InvokeAsync("Footer")
       
@@ -87,7 +87,7 @@
     <script type="text/javascript" src="javascript/jquery.isotope.min.js"></script>
     <script type="text/javascript" src="javascript/jquery.magnific-popup.min.js"></script>
     <script type="text/javascript" src="javascript/jquery.flexslider-min.js"></script>
-    <script type="text/javascript" src="javascript/main.js"></script>
+    
 
 
     <!-- Revolution Slider -->
@@ -96,11 +96,22 @@
     <script type="text/javascript" src="javascript/slider.js"></script>
 
 
+    <script src="/js/vue/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script type="text/javascript" src="javascript/main.js"></script>
+     <script>
+        var base_url = window.location.origin;
 
+        Vue.prototype.$service = axios.create({
+            /**/
+            baseURL: base_url,
+            /**/
+            timeout: 10000,
+            headers: {}
+        });
+       
 
-
-
-
+    </script>
 
 
     @RenderSection("Scripts", required: false)
