@@ -1,0 +1,500 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
+</style>
+
+<div class="content animated fadeIn" id="app">
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Çalışmalar</h5>
+            <div class="header-elements" v-if="isEditForm">
+                <div class="list-icons">
+                    <button class="btn btn-outline-info  btn-sm"
+                            @@click="isEditForm=false;updateID=''"
+                            title="Listeye Dön">
+                        <i class="icon-arrow-left8"></i>
+                        Listeye Dön
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body d-flex justify-content-between " v-if="!isEditForm">
+            <div>
+                <template>
+
+                    <el-input clearable placeholder="ÖRN: Çalışmalar" style="width:200px" size="small" v-model="filter.SearchTerm"></el-input>
+
+
+                    <el-button size="mini"
+                               plain
+                               type="info"
+                               @@click="getData();">
+                        <i class="icon-search4 mr-2 "></i>
+                        Detaylı Ara
+                    </el-button>
+
+
+                    <el-button v-if="filter.SearchTerm.length>0"
+                               size="mini"
+                               plain
+                               type="danger"
+                               @@click="filter.SearchTerm='';getData();">
+                        <i class="icon-close2 mr-2 "></i>
+                        Filtreyi Temizle
+                    </el-button>
+                </template>
+            </div>
+            <div>
+                <template v-if="!isEditForm">
+                    <el-button v-if="selectedIDs.length>0" size="mini"
+                               plain
+                               type="danger"
+                               @@click="bulkDetelete()">
+                        <i class="icon-trash mr-2 "></i>
+                        Seçilileri Sil
+                    </el-button>
+
+
+                    <button class="btn btn-outline-info  btn-sm"
+                            v-if="!isEditForm"
+                            @@click="isEditForm=true"
+                            title="Ekle">
+                        <i class="icon-plus-circle2 mr-2 "></i>
+                        Ekle
+                    </button>
+
+                </template>
+            </div>
+        </div>
+
+        @* Table Template Start *@
+        <template v-if="!isEditForm">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th class="width-50"> <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @@change="handleCheckAllChange"></el-checkbox></th>
+                            <th>Başlık</th>
+                            <th>Özet</th>
+                            <th style="width:200px; text-align:center;">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr v-for="item in items.filter(data => !filter.SearchTerm || data.title.toLowerCase().includes(filter.SearchTerm.toLowerCase()))" :key="item.id">
+
+                            <td>
+                                <el-checkbox :label="item.id" v-model="selectedIDs" :key="item.id"><span></span></el-checkbox>
+                            </td>
+                            <td>{{item.title}}</td>
+                            <td>
+                                {{item.description}}
+                            </td>
+
+
+                            <td class="text-center">
+                                <button class="btn btn-outline-info  btn-sm" @@click="handleEdit(item)" title="Güncelle"><i class="icon-database-edit2"></i></button>
+                                <button class="btn btn-outline-danger btn-sm" @@click="confirmDelete(item)" title="Sil"><i class="icon-trash"></i></button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-md-12 pagination mt-3 mb-3" style="display: flex; justify-content: center;">
+                        <el-pagination background style="text-align:center;"
+                                       layout="prev, pager, next"
+                                       :total="filter.TotalCount"
+                                       :page-size="filter.Take"
+                                       :current-page.sync="filter.CurrentPage"
+                                       @@current-change="currentPageChanged"
+                                       :hide-on-single-page="true">
+                        </el-pagination>
+
+
+                    </div>
+                </div>
+            </div>
+        </template>
+        @* Table Template End *@
+
+        @* Edit Template Start *@
+        <template v-else>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-body form">
+                        <input autocomplete="false" name="hidden" type="text" style="display:none;">
+
+                        <div class="row">
+                            <div class="form-group col-lg-2">
+                              <el-upload class="avatar-uploader"
+                                  :action= "addPhotoHeader"
+                                  :show-file-list="false"
+                                  :on-success="handleAvatarSuccess"
+                                  :before-upload="beforeAvatarUpload">
+                                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                </el-upload>
+                            </div>
+
+                            <div class="col-lg-10 ">
+                                <div class="form-group row">
+                                    <label> Başlık </label>
+                                    <el-input v-model="request.title"></el-input>
+                                    <span class="validation-error" v-if="response.validationErrors.some(x => x.key == 'Title')">{{ response.validationErrors.filter(x => x.key == 'Title')[0].value }}</span>
+                                </div>
+                                <div class="form-group row">
+                                    <label>Özet</label>
+                                    <el-input type="textarea"
+                                              :rows="2"
+                                              v-model="request.description">
+                                    </el-input>
+
+                                    <span class="validation-error" v-if="response.validationErrors.some(x => x.key == 'Description')">{{ response.validationErrors.filter(x => x.key == 'Description')[0].value }}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label> Fotoğraflar </label>
+                                <el-upload action="#"
+                                           list-type="picture-card"
+                                           :auto-upload="false"
+                                           multiple
+                                           ref="upload"
+                                           :file-list="filesWork">
+                                    <i slot="default" class="el-icon-plus"></i>
+                                    <div slot="file" slot-scope="{file}">
+                                        <img class="el-upload-list__item-thumbnail"
+                                             :src="file.url" alt="">
+                                        <span class="el-upload-list__item-actions">
+                                            <span class="el-upload-list__item-preview"
+                                                  @@click="handlePictureCardPreview(file)">
+                                                <i class="el-icon-zoom-in"></i>
+                                            </span>
+                                            <span v-if="!disabled"
+                                                  class="el-upload-list__item-delete"
+                                                  @@click="handleDownload(file)">
+                                                <i class="el-icon-download"></i>
+                                            </span>
+                                            <span v-if="!disabled"
+                                                  class="el-upload-list__item-delete"
+                                                  @@click="handleRemove(file)">
+                                                <i class="el-icon-delete"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </el-upload>
+                                <el-dialog :visible.sync="dialogVisible">
+                                    <img width="100" :src="dialogImageUrl" alt="">
+                                </el-dialog>
+                            </div>
+                        </div>
+
+                        <div class="text-right mt-3">
+                            <button v-if="updateID.replace(/\s/g, '').length > 0" type="submit" class="btn btn-outline-info " @@click="updateItem">
+                                <i class="icon-database-edit2 mr-2"></i>
+                                Güncelle
+                            </button>
+
+                            <button type="submit" v-else class="btn btn-outline-info " @@click="addItem">
+                                <i class="icon-plus-circle2 mr-2"></i>
+                                Ekle
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </template>
+        @* Edit Template End *@
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+<script>
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            filesWork:[],
+            dialogImageUrl: '',
+            dialogVisible: false,
+            disabled: false,
+            imageUrl: '',
+            addPhotoHeader:'',
+            url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+            items: [],
+            search: '',
+            updateID: '',
+            isEditForm: false,
+            selectedIDs: [],
+            isIndeterminate: true,
+            checkAll: false,
+            request: {
+                id: null,
+                title: '',
+                description: '',
+                collection: null
+            },
+            filter: {
+                Skip: 0,
+                Take: 10,
+                Page: 1,
+                TotalCount: 0,
+                CurrentPage: 1,
+                SearchTerm: ''
+            },
+            response: {
+                validationErrors: [],
+                Data: null
+            },
+            lock: true,
+            search: ''
+        },
+        methods: {
+
+            handleRemove(file) {
+                console.log(file);
+            },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
+           async handleDownload(file) {
+               debugger;
+               
+            },
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = res;
+            },
+            beforeAvatarUpload(file) {
+                  debugger;
+                
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isLt2M) {
+                    this.$message.error('Avatar picture size can not exceed 2MB!');
+                }
+                return  isLt2M;
+            },
+            //Data Operations Start
+            getData: async function () {
+
+                debugger;
+                var res = (await this.$service.post('workM/get', {
+                    ... this.filter,
+                    Skip: (this.filter.CurrentPage * this.filter.Take) - this.filter.Take
+                }));
+
+                this.items = res.data.data.items;
+                this.filter.TotalCount = res.data.data.totalCount;
+            },
+            addItem: async function () {
+                var formData = new FormData();
+
+                for (var i = 0; i < this.$refs.upload.uploadFiles.length; i++) {
+                    let file = this.$refs.upload.uploadFiles[i];
+
+                    formData.append('files[' + i + ']', file.raw, 'files[' + i + '].jpg');
+                }
+                formData.append('title', this.request.title);
+                formData.append('description', this.request.description);
+                formData.append('headerImageUrl', this.imageUrl);
+
+                var message=null;
+
+                  var base_url = window.location.origin;
+                axios({
+                      method: "post",
+                      url: base_url+"/admin/workM/add",
+                      data: formData,
+                      headers: { "Content-Type": "multipart/form-data" },
+                    })
+                      .then(function (response) {
+                         message =response.data; 
+                      });
+                      
+                       
+                            this.$message.success('Kayıt Eklendi');
+
+                            this.updateID = '';
+                            this.isEditForm = false;
+                            this.request.id = this.response.data.id;
+                            this.request = {
+                                id: null,
+                                title: '',
+                                description:''
+                            };
+                            
+
+
+            },
+            updateItem: async function () {
+                this.response = (await this.$service.post('workM/update', this.request)).data;
+                if (!this.response.hasError) {
+                    this.$message.success(this.response.message);
+                } else {
+                    this.$message.error(this.response.message);
+                }
+
+            },
+            confirmDelete(item) {
+
+                this.$confirm('Bu kaydı silmek istediğine emin misin?', 'Uyarı', {
+                    confirmButtonText: 'Evet',
+                    cancelButtonText: 'Vazgeç',
+                    type: 'warning'
+                }).then(async () => {
+                    this.response = (await this.$service.post('workM/delete', item)).data;
+                    if (!this.response.hasError) {
+                        this.$message.success(this.response.message);
+                        this.getData();
+                    } else {
+                        this.$message.error(this.response.message);
+                    }
+
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Vazgeçildi'
+                    });
+                });
+            },
+            bulkDetelete: async function () {
+
+                this.$confirm('Seçili kayıtları silmek istediğine emin misin?', 'Uyarı', {
+                    confirmButtonText: 'Evet',
+                    cancelButtonText: 'Vazgeç',
+                    type: 'warning'
+                }).then(async () => {
+                    var request = {
+                        SelectedIDs: this.selectedIDs
+                    };
+
+                    this.response = (await this.$service.post('workM/bulkDelete', request)).data;
+                    if (!this.response.hasError) {
+                        this.$message.success(this.response.message);
+                        this.selectedIDs = [];
+                        this.getData();
+                    } else {
+                        this.$message.error(this.response.message);
+                    }
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Vazgeçildi'
+                    });
+                });
+
+            },
+            changeIsActive: async function (item) {
+                debugger;
+
+                var request = {
+                    Id: item.id,
+                    IsActive: !item.isActive
+                };
+
+                this.response = (await this.$service.post('workM/updateActive', request)).data;
+                if (!this.response.hasError) {
+                    this.$message.success(this.response.message);
+                } else {
+                    this.$message.error(this.response.message);
+                }
+            },
+            //Data Operations End
+            handleCheckAllChange(val) {
+
+                this.selectedIDs = val ? this.items.map(k => k.id) : [];
+                this.isIndeterminate = false;
+            },
+
+            handleEdit(row) {
+                this.updateID = row.id;
+                this.request = row;
+                this.isEditForm = true;
+            },
+            handleDelete(index, row) {
+                this.confirmDelete();
+            },
+
+            currentPageChanged() {
+                //window.scrollToTop();
+            },
+
+
+        },
+        async beforeMount() {
+            this.getData();
+            this.addPhotoHeader = window.location.origin + '/admin/workM/AddHeaderPhoto/';
+
+        },
+        mounted() {
+            setTimeout(() => {
+                this.lock = false;
+            }, 2000)
+        },
+        watch: {
+            'filter.Page': {
+                handler: function () {
+                    this.getData();
+                }
+            },
+            'filter.CurrentPage': {
+                handler: function () {
+                    this.getData();
+                }
+            },
+            'selectedIDs': function () {
+                let checkedCount = this.selectedIDs.length;
+                this.checkAll = checkedCount === this.items.length;
+                this.isIndeterminate = checkedCount > 0 && checkedCount < this.items.length;
+            },
+        },
+        computed: {
+
+        }
+    });
+
+</script>
+
+
+} 

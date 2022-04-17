@@ -54,10 +54,21 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
         {
             var response = new BaseResponse<AddCatalogResponse>();
             response.Data = new AddCatalogResponse();
+
+            string slug = request.Title.ToUrlSlug();
+            int sayac = 0;
+
+            while (await repo.AnyAsync(x => x.Slug == slug))
+            {
+                sayac++;
+
+                slug = $"{slug}-v{sayac}";
+            }
+
             var item = new Catalog
             {
                 Title = request.Title,
-                Slug = request.Title.ToUrlSlug()
+                Slug = slug
             };
 
             await repo.AddAsync(item);

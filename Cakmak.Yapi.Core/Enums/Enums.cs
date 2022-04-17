@@ -22,10 +22,13 @@ namespace Cakmak.Yapi.Core.Enums
 
             [Display(Name = "services")]
             Services = 3,
+
             [Display(Name = "head")]
             Head = 4,
             [Display(Name = "body")]
-            Body = 5
+            Body = 5,
+            [Display(Name = "work")]
+            Work = 6,
         }
 
     }

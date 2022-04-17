@@ -1,32 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Cakmak.Yapi.Core.Extensions;
+﻿using Cakmak.Yapi.Core.Extensions;
 using Cakmak.Yapi.Entity.Definition;
 using Cakmak.Yapi.Models.Base.Response;
 using Cakmak.Yapi.Presentation.Areas.Admin.Code;
-using Cakmak.Yapi.Presentation.Areas.Admin.Models.Request;
-using Cakmak.Yapi.Presentation.Areas.Admin.Models.Request.ServicesRequest;
-using Cakmak.Yapi.Presentation.Areas.Admin.Models.Response.ServicesResponse;
+using Cakmak.Yapi.Presentation.Areas.Admin.Models.Request.WorkRequest;
+using Cakmak.Yapi.Presentation.Areas.Admin.Models.Response.WorkResponse;
 using Cakmak.Yapi.Repository.Definition;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
 {
-    public class ServicesMController : BaseMController
+    public class WorkMController : BaseMController
     {
-        private readonly ServicesRepository repo;
+        private readonly WorkRepository repo;
 
-        public ServicesMController(ServicesRepository servicesRepo)
+        public WorkMController(WorkRepository _repo)
         {
-            this.repo = servicesRepo;
+            repo = _repo;
         }
-
         public IActionResult Index()
         {
             return View();
@@ -34,10 +28,10 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<LoadServicesResponse>>> Get([FromBody] LoadServicesRequest request)
+        public async Task<ActionResult<BaseResponse<LoadWorkResponse>>> Get([FromBody] LoadWorkRequest request)
         {
-            var response = new BaseResponse<LoadServicesResponse>();
-            response.Data = new LoadServicesResponse();
+            var response = new BaseResponse<LoadWorkResponse>();
+            response.Data = new LoadWorkResponse();
             var query = repo.GetBy(x => true);
 
             if (!string.IsNullOrWhiteSpace(request.SearchTerm))
@@ -51,10 +45,10 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<AddServicesResponse>>> Add()
+        public async Task<ActionResult<BaseResponse<AddWorkResponse>>> Add()
         {
-            var response = new BaseResponse<AddServicesResponse>();
-            var request = new AddServicesRequest();
+            var response = new BaseResponse<AddWorkResponse>();
+            var request = new AddWorkRequest();
 
             request.Title = Request.Form.Keys.Any(x => x == "title") ?
                 Request.Form["title"].ToString() : "";
@@ -71,7 +65,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
                  new Models.Request.FileUploadRequest.ImageUploadRequest()
                  {
                      Collection = images,
-                     ContentCategory = Core.Enums.Enums.UploadFolder.Services,
+                     ContentCategory = Core.Enums.Enums.UploadFolder.Work,
                      ContentType = Core.Enums.Enums.UploadFolder.Body,
                      ImageFolderName = request.Title.ToUrlSlug()
                  });
@@ -86,10 +80,10 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
 
                 slug = $"{slug}-v{sayac}";
             }
+             
 
-
-            response.Data = new AddServicesResponse();
-            var item = new Services
+            response.Data = new AddWorkResponse();
+            var item = new Work
             {
                 Title = request.Title,
                 Description = request.Description,
@@ -98,6 +92,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
                 Images = addImages.Items,
             };
 
+           
             await repo.AddAsync(item);
             response.SetMessage("Kayıt başarıyla eklendi");
 
@@ -106,9 +101,9 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<UpdateServicesResponse>>> Update([FromBody] UpdateServicesRequest request)
+        public async Task<ActionResult<BaseResponse<UpdateWorkResponse>>> Update([FromBody] UpdateWorkRequest request)
         {
-            var response = new BaseResponse<UpdateServicesResponse>();
+            var response = new BaseResponse<UpdateWorkResponse>();
 
             var item = await repo.GetByIdAsync(request.Id);
             if (item == null)
@@ -124,10 +119,10 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<DeleteServicesResponse>>> Delete([FromBody] DeleteServicesRequest request)
+        public async Task<ActionResult<BaseResponse<DeleteWorkResponse>>> Delete([FromBody] DeleteWorkRequest request)
         {
-            var response = new BaseResponse<DeleteServicesResponse>();
-            response.Data = new DeleteServicesResponse();
+            var response = new BaseResponse<DeleteWorkResponse>();
+            response.Data = new DeleteWorkResponse();
 
             var item = await repo.GetByIdAsync(request.Id);
             if (item == null)
@@ -140,10 +135,10 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<DeleteServicesResponse>>> BulkDelete([FromBody] BulkDeleteServicesRequest request)
+        public async Task<ActionResult<BaseResponse<DeleteWorkResponse>>> BulkDelete([FromBody] BulkDeleteWorkRequest request)
         {
-            var response = new BaseResponse<DeleteServicesResponse>();
-            await repo.DeleteManyAsync(Builders<Services>.Filter.Where(x => request.SelectedIDs.Contains(x.Id)));
+            var response = new BaseResponse<DeleteWorkResponse>();
+            await repo.DeleteManyAsync(Builders<Work>.Filter.Where(x => request.SelectedIDs.Contains(x.Id)));
             response.SetMessage("Seçili öğeler başarıyla silindi");
             return Ok(response);
         }
@@ -158,11 +153,10 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
                  new Models.Request.FileUploadRequest.ImageUploadRequest()
                  {
                      Collection = images,
-                     ContentCategory = Core.Enums.Enums.UploadFolder.Services,
+                     ContentCategory = Core.Enums.Enums.UploadFolder.Work,
                      ContentType = Core.Enums.Enums.UploadFolder.Head,
                  });
             return addImages.Items[0].Url;
         }
-
     }
 }

@@ -11,5 +11,7 @@ namespace Cakmak.Yapi.Repository.Definition
         public ServicesRepository(string connectionString, string database, string collection) : base(connectionString, database, collection)
         {
         }
+
+
     }
 }

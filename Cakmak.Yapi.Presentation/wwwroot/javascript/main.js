@@ -366,12 +366,14 @@
 
         if(retina) {
             if ( $( ".header" ).hasClass( 'logo-2' ) ) {
-                $('.header .logo.logo-2').find('img').attr({src:'./images/logo-2@2x.png',width:'103',height:'20'});  
+                $('.header .logo.logo-2').find('img').attr({src:'/images/logo-2@2x.png',width:'103',height:'20'});  
             } else {
-                $('.header .logo').find('img').attr({src:'./images/logo@2x.png',width:'103',height:'20'}); 
+                $('.header .logo').find('img').attr({src:'/images/logo@2x.png',width:'103',height:'20'}); 
             }
         }
-    };    
+    };
+
+  
     
     var parallax = function() {
         if ( $().parallax && isMobile.any() == null ) {

@@ -3,6 +3,7 @@ using Cakmak.Yapi.Entity.Definition;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Cakmak.Yapi.Repository.Definition
 {
@@ -11,5 +12,6 @@ namespace Cakmak.Yapi.Repository.Definition
         public WorkRepository(string connectionString, string database, string collection) : base(connectionString, database, collection)
         {
         }
+
     }
 }
