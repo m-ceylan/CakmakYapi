@@ -10,12 +10,13 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="page-title-heading">
-                    <h1 class="title">@Model.Item.Title</span></h1>
+                    <h1 class="title"><span>@Model.Item.Title</span></h1>
                 </div><!-- /.page-title-captions -->
                 <div class="breadcrumbs">
                     <ul>
                         <li><a href="@Url.Action("Index","Home")">Anasayfa</a></li>
-                        <li> Hizmetler </li>
+                        <li><a href="@Url.Action("Index","Services")">Hizmetlerimiz</a></li>
+                        <li> @Model.Item.Title </li>
                     </ul>
                 </div><!-- /.breadcrumbs -->
             </div><!-- /.col-md-12 -->
@@ -24,36 +25,25 @@
 </div><!-- /.page-title -->
 <!-- Portfolio detail -->
 
+ 
 <section class="flat-row">
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <div class="flat-portfolio-gallery">
-                    <div class="flat-portfolio-gallery-slider">
-                        <div id="flat-portfolio-gallery-flexslider">
-                            <ul class="slides">
-                                @foreach (var item in Model.Item.Images.OrderBy(x => x.OrderNo).ToList())
-                                {
-                                    <li>
-                                        <img src="@item.Url" alt="images">
-                                    </li>
-                                }
-                            </ul>
-                        </div>
+                <div class="featured-post flat-blog-slider">
+                    <div class="flexslider">
+                        <ul class="slides">
 
-                        <div id="flat-portfolio-gallery-carousel">
-                            <ul class="slides">
-                                @foreach (var item in Model.Item.Images.OrderBy(x => x.OrderNo).ToList())
-                                {
-                                    <li>
-                                        <img src="@item.Url" style="cursor: pointer;" alt="images">
-                                    </li>
-                                }
-                            </ul>
-                        </div>
+                            @foreach (var item in Model.Item.Images.OrderBy(x => x.OrderNo).ToList())
+                            {
+                                <li>
+                                    <img src="@item.Url" alt="images">
+                                </li>
+                            }
 
-                    </div><!-- /.flat-portfolio-gallery-slider -->
-                </div><!-- /.flat-portfolio-gallery -->
+                        </ul>
+                    </div>
+                </div><!-- /.feature-post -->
             </div>
 
             <div class="col-md-4">
@@ -78,58 +68,3 @@
         </div>
     </div>
 </section>
-
-<!-- Portfolio related -->
-<section class="flat-row row-related">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="flat-portfolio grid-3columns alt">
-                    <div class="portfolio-wrap clearfix">
-                        <div class="item builder painting">
-                            <div class="featured-images">
-                                <img src="~/images/portfolio/simple/1.jpg" alt="images">
-                                <div class="overlay">
-                                </div>
-                            </div><!-- /.featured-images -->
-                            <h3 class="project-title">Stone table Volcano</h3>
-                            <ul class="category-portfolio">
-                                <li><a href="#">Photography</a></li>
-                                <li><a href="#">Startup</a></li>
-                            </ul>
-                        </div><!-- /.portfolio-item -->
-
-                        <div class="item builder painting">
-                            <div class="featured-images">
-                                <img src="~/images/portfolio/simple/2.jpg" alt="images">
-                                <div class="overlay">
-                                </div>
-                            </div><!-- /.featured-images -->
-                            <h3 class="project-title">Cup of the best coffee</h3>
-                            <ul class="category-portfolio">
-                                <li><a href="#">Design</a></li>
-                                <li><a href="#">Handmade</a></li>
-                            </ul>
-                        </div><!-- /.portfolio-item -->
-
-                        <div class="item builder painting">
-                            <div class="featured-images">
-                                <img src="~/images/portfolio/simple/3.jpg" alt="images">
-                                <div class="overlay">
-                                </div>
-                            </div><!-- /.featured-images -->
-                            <h3 class="project-title">Very pretty bottle of wine</h3>
-                            <ul class="category-portfolio">
-                                <li><a href="#">Photography</a></li>
-                            </ul>
-                        </div><!-- /.portfolio-item -->
-                    </div><!-- /.portfolio-wrap -->
-                </div><!-- /.flat-portfolio -->
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-

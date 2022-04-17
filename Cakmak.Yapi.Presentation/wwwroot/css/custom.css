@@ -28,75 +28,60 @@
     display: none !important;
 }
 
-.header .logo-c {
-    text-align: center;
-    float: none;
-    position: absolute;
-    left: 50%;
-    margin-left: -51px;
-}
-
-.header .logo-c {
-    width: 103px;
-}
-
-
-.header .logo-c {
-    width: 100px;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-    margin: 35px 0 0 0;
-}
-
-.header .logo-c,
-.menu.menu-extra,
-.nav-wrap {
-    float: left;
-    position: relative;
-}
-
-
-.header .logo-c,
-.menu.menu-extra {
-    width: 20%;
-}
-
-
-    .header .logo-c a {
-        border: 1px solid #333;
-        padding: 2px 2px;
-        display: inline-block;
-    }
-
-
-.header.header-style2 .logo-c a {
-    border: 1px solid #ccc;
-}
-
-
-.header.header-style3 .logo-c a {
-    border: 1px solid #ccc;
-}
-
-
-#logo-c a {
-    display: block;
-    padding: 10px 0 10px 0;
-    text-align: center;
-    background-color: #fff;
-}
-
-#top-45 {
+.top-45 {
     top: 45% !important;
 }
 
-#top-50 {
+.top-50 {
     top: 50% !important;
 }
 
-#widht-100 {
+.widht-100 {
     width: 100% !important;
 }
+
+
+.img-fill {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+
+
+@media only screen and (max-width: 991px) {
+    .images-box, .images-box.show {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    .box-content {
+        position:initial!important;
+    }
+
+    .images-box img {
+        width: 100% !important;
+        /* width: 265px; */
+    }
+
+    .images-box .box-content .box-redmore {
+        margin: 15px 0 0!important;
+        padding-left: 28px;
+        padding-right: 27px;
+        border-radius: 3px;
+        display: inline-block;
+        border: 2px solid #303030;
+        line-height: 56px;
+        height: 56px;
+    }
+
+    .images-box .box-content .box-title {
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 15px 0 8px!important;
+    }
+}
+

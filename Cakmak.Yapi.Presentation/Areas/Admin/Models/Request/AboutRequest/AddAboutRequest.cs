@@ -10,6 +10,9 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Models.Request.AboutRequest
     {
         [CustomRequired]
         public string Title { get; set; }
+        public string Content { get; set; }
+        public string Image { get; set; }
 
+        public bool IsActive { get; set; }
     }
 }

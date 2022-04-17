@@ -1,8 +1,19 @@
 [
   {
-    "outputFileName": "wwwroot/css/site.min.css",
+    "outputFileName": "wwwroot/bundles/css/site.min.css",
     "inputFiles": [
-      "wwwroot/css/site.css"
+
+      "wwwroot/css/custom.css",
+      "wwwroot/css/site.css",
+      "wwwroot/stylesheets/animate.css",
+      "wwwroot/stylesheets/bootstrap.css",
+      "wwwroot/stylesheets/flexslider.css",
+      "wwwroot/stylesheets/font-awesome.css",
+      "wwwroot/stylesheets/icomoon.css",
+      "wwwroot/stylesheets/magnific-popup.css",
+      "wwwroot/stylesheets/owl.carousel.css",
+      "wwwroot/stylesheets/revolution-slider.css",
+      "wwwroot/stylesheets/shortcodes.css"
     ]
   }
 ]

@@ -52,8 +52,10 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult<BaseResponse<AddCatalogResponse>>> Add([FromBody] AddCatalogRequest request)
         {
-            var response = new BaseResponse<AddCatalogResponse>();
-            response.Data = new AddCatalogResponse();
+            var response = new BaseResponse<AddCatalogResponse>
+            {
+                Data = new AddCatalogResponse()
+            };
 
             string slug = request.Title.ToUrlSlug();
             int sayac = 0;

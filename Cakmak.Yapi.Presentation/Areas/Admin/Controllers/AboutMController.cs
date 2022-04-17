@@ -16,7 +16,7 @@ using MongoDB.Driver.Linq;
 
 namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
 {
-    
+
     public class AboutMController : BaseMController
     {
         private readonly AboutRepository repo;
@@ -30,9 +30,9 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<LoadAboutResponse>>> Get([FromBody]LoadServicesRequest request)
+        public async Task<ActionResult<BaseResponse<LoadAboutResponse>>> Get([FromBody] LoadAboutRequest request)
         {
             var response = new BaseResponse<LoadAboutResponse>();
             response.Data = new LoadAboutResponse();
@@ -40,24 +40,29 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
 
             if (!string.IsNullOrWhiteSpace(request.SearchTerm))
             {
-                query = query.Where(x=>x.Title.Contains(request.SearchTerm));
+                query = query.Where(x => x.Title.Contains(request.SearchTerm));
             }
 
-            response.Data.TotalCount =await query.CountAsync();
-            response.Data.Items = await query.OrderByDescending(x=>x.CreateDate).Skip(request.Skip).Take(request.Take).ToListAsync();
+            response.Data.TotalCount = await query.CountAsync();
+            response.Data.Items = await query.OrderByDescending(x => x.CreateDate).Skip(request.Skip).Take(request.Take).ToListAsync();
 
 
 
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<AddAboutResponse>>> Add([FromBody]AddServicesRequest request)
+        public async Task<ActionResult<BaseResponse<AddAboutResponse>>> Add([FromBody] AddAboutRequest request)
         {
-            var response = new BaseResponse<AddAboutResponse>();
-            response.Data = new AddAboutResponse();
-            var item = new About 
+            var response = new BaseResponse<AddAboutResponse>
             {
-             Title=request.Title
+                Data = new AddAboutResponse()
+            };
+            var item = new About
+            {
+                Title = request.Title,
+                Image = request.Image,
+                Content = request.Content,
+                 IsActive = request.IsActive,   
             };
 
             await repo.AddAsync(item);
@@ -68,7 +73,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<UpdateAboutResponse>>> Update([FromBody]UpdateServicesRequest request)
+        public async Task<ActionResult<BaseResponse<UpdateAboutResponse>>> Update([FromBody] UpdateAboutRequest request)
         {
             var response = new BaseResponse<UpdateAboutResponse>();
 
@@ -85,10 +90,12 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<DeleteAboutResponse>>> Delete([FromBody]DeleteServicesRequest request)
+        public async Task<ActionResult<BaseResponse<DeleteAboutResponse>>> Delete([FromBody] DeleteAboutRequest request)
         {
-            var response = new BaseResponse<DeleteAboutResponse>();
-            response.Data = new DeleteAboutResponse();
+            var response = new BaseResponse<DeleteAboutResponse>
+            {
+                Data = new DeleteAboutResponse()
+            };
 
             var item = await repo.GetByIdAsync(request.Id);
             if (item == null)
@@ -101,7 +108,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<DeleteAboutResponse>>> BulkDelete([FromBody] BulkDeleteServicesRequest request)
+        public async Task<ActionResult<BaseResponse<DeleteAboutResponse>>> BulkDelete([FromBody] BulkDeleteAboutRequest request)
         {
             var response = new BaseResponse<DeleteAboutResponse>();
             await repo.DeleteManyAsync(Builders<About>.Filter.Where(x => request.SelectedIDs.Contains(x.Id)));
@@ -121,6 +128,24 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             response.SetMessage("Kayıt başarıyla güncellendi");
             return Ok(response);
         }
+
+        [HttpPost]
+        public string AddHeaderPhoto()
+        {
+            var images = Request.Form?.Files;
+
+            CustomFileUpload customFileUpload = new();
+            var addImages = customFileUpload.UpLoadImage(
+                 new Models.Request.FileUploadRequest.ImageUploadRequest()
+                 {
+                     Collection = images,
+                     ContentCategory = Core.Enums.Enums.UploadFolder.About,
+                     ContentType = Core.Enums.Enums.UploadFolder.Head,
+                 });
+
+            return addImages.Items[0].Url;
+        }
+
 
     }
 }

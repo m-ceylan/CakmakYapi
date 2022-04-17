@@ -42,6 +42,7 @@
             var rowCount = Math.Ceiling(avarage);
             int take = 3;
             int skip = 0;
+            var showFlag = true;
 
             @for (var i = 1; i <= rowCount; i++)
             {
@@ -49,8 +50,10 @@
                     <div class="col-md-12">
                         @foreach (var item in Model.Data.Items.Skip(skip).Take(take))
                         {
-                            <div class="images-box show clear-fix " style="flex-direction: row;">
-                                <img src="@item.HeadImageUrl" alt="serives">
+                            <div class="images-box @(showFlag ? "show" : "")  clear-fix ">
+                                <div>
+                                    <img src="@item.HeadImageUrl" alt="serives">
+                                </div>
                                 <div class="box-content">
                                     <div class="box-title">
                                         <a href="#">@item.Title</a>
@@ -59,6 +62,7 @@
                                     <a href="@Url.Action("Detail","Services",new {id = item.Slug})" class="box-redmore">Detaya Git</a>
                                 </div>
                             </div>
+                            showFlag = false;
                         }
                     </div><!-- /.col-md-12 -->
             </div>

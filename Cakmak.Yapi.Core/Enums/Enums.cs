@@ -29,6 +29,9 @@ namespace Cakmak.Yapi.Core.Enums
             Body = 5,
             [Display(Name = "work")]
             Work = 6,
+
+            [Display(Name = "about")]
+            About = 7,
         }
 
     }

@@ -5,64 +5,66 @@
 }
 
 <div class="page-title parallax parallax2">
-            <div class="overlay"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">                    
-                        <div class="page-title-heading">
-                            <h1 class="title"><span>@Model.Item.Title</span></h1>
-                        </div><!-- /.page-title-captions -->
-                        <div class="breadcrumbs">
-                            <ul>
-                                <li><a href="@Url.Action("Index","Home")">Anasayfa</a></li>
-                                <li> Çalışmalarımız / @Model.Item.Title</li>
-                            </ul>                   
-                        </div><!-- /.breadcrumbs -->   
-                    </div><!-- /.col-md-12 -->   
-                </div><!-- /.row -->  
-            </div><!-- /.container -->                      
-        </div><!-- /.page-title --> 
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="title"><span>@Model.Item.Title</span></h1>
+                </div><!-- /.page-title-captions -->
+                <div class="breadcrumbs">
+                    <ul>
+                        <li><a href="@Url.Action("Index","Home")">Anasayfa</a></li>
+                        <li><a href="@Url.Action("Index","Work")">Çalışmalarımız</a></li>
+                        <li>@Model.Item.Title</li>
+                    </ul>
+                </div><!-- /.breadcrumbs -->
+            </div><!-- /.col-md-12 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</div><!-- /.page-title -->
+<!-- Portfolio -->
+<section class="flat-row">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="portfolio-filter">
+                    <li class="active"><a>@Model.Item.Title</a></li>
+                </ul><!-- /.project-filter -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="flat-portfolio grid-3columns simple style-4">
+                    <div class="portfolio-wrap clearfix">
+
+                        @foreach (var item in Model.Item.Images)
+                        {
+                            <div class="item builder painting">
+                                <div class="featured-images">
+                                    <img src="@item.Url" alt="images">
+                                    <div class="overlay">
+                                        <ul class="portfolio-details widht-100 top-50">
+                                            <li>
+                                                <a class="popup-gallery" href="@item.Url">
+                                                    <i class="fa fa-search"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div><!-- /.featured-images -->
+                        </div>
+
+                            <!-- /.portfolio-item -->
+                        }
 
 
-        <!-- Portfolio -->
-        <section class="flat-row">  
-            <div class="container">                
-               <div class="row">
-                    <div class="col-md-12">                           
-                        <ul class="portfolio-filter">
-                            <li class="active"><a>@Model.Item.Title</a></li>
-                        </ul><!-- /.project-filter -->
-                    </div>
-                </div>
+                    </div><!-- /.portfolio-wrap -->
+                </div><!-- /.flat-portfolio -->
+            </div>
+        </div>
+    </div>
+</section>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="flat-portfolio grid-3columns simple style-4">             
-                            <div class="portfolio-wrap clearfix">
 
-                                @foreach (var item in Model.Item.Images)
-                               {
-                                   <div class="item builder painting">                                
-                                    <div class="featured-images">
-                                        <img src="@item.Url" alt="images">
-                                        <div class="overlay">  
-                                            <ul class="portfolio-details w-100 top-50">
-                                                <li><a class="popup-gallery" href="@item.Url">
-                                                    <i class="fa fa-search"></i></a>
-                                                </li>
-                                            </ul>                      
-                                        </div>                       
-                                    </div><!-- /.featured-images -->                                              
-                                </div><!-- /.portfolio-item -->
-                               }
-                                
-                                
-                            </div><!-- /.portfolio-wrap --> 
-                        </div><!-- /.flat-portfolio --> 
-                    </div>
-                </div>
-            </div> 
-        </section> 
-
-         
-          
