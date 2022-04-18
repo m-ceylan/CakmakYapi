@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
 
@@ -11,12 +10,12 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="page-title-heading">
-                    <h1 class="title">Contact <span>Us.</span></h1>
+                    <h1 class="title">İletişim</span></h1>
                 </div><!-- /.page-title-captions -->
                 <div class="breadcrumbs">
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li> Contact </li>
+                        <li><a href="@Url.Action("Index","Home")">Anasayfa</a></li>
+                        <li> İletişim </li>
                     </ul>
                 </div><!-- /.breadcrumbs -->
             </div><!-- /.col-md-12 -->
@@ -26,20 +25,56 @@
 <!-- Contact info -->
 <section class="flat-row bg-theme">
     <div class="container">
+
         <div class="row">
+            <div class="col-md-12">
+                <iframe class="google-map-conten-c" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2651.764446118057!2d29.06005599183578!3d37.7783874138551!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c73fc00b8a4f63%3A0xc6e0a15444c3a5ae!2sBeta%20Yapi!5e0!3m2!1str!2str!4v1582122023048!5m2!1str!2str" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+            </div>
+
+        </div>
+
+        <div class="row mt-20">
             <div class="col-md-4">
                 <div class="iconbox-item">
                     <div class="iconbox left style2">
                         <div class="box-content">
                             <div class="box-title">
-                                <a href="#">Let’s have a chat!</a>
+                                <span >Adres</span>
                             </div>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod.</p>
-                            <p>
-                                <span><strong>Telephone:</strong> <span class="number">1-888-345-6789</span></span><br>
-                                <span> <strong>Fax:</strong> <span class="number">1-888-345-6789</span></span>
+                            <p><i class="fa fa-location-arrow"></i>
+                                <span><strong>Adres</strong> <span class="number">Denizli, Merkezefendi
+                                            Merkezefendi Mah.1852 sk. No:10/A</span></span><br></p>
+                            <p>Pzt-Cmt 09:00-19:00</p>
+
+                             
+                        </div>
+
+                    </div><!-- /.iconbox -->
+                </div><!-- /.iconbox-item -->
+            </div>
+
+            <div class="col-md-4">
+                <div class="iconbox-item">
+                    <div class="iconbox left style2">
+                        <div class="box-content">
+                            <div class="box-title">
+                                <span >Telefon</span>
+                            </div>
+                          <p>
+                              <i class="fa fa-phone"></i>
+                                <span>
+                                    <strong >0258 377 53 46</strong>
+                                </span>
+
                             </p>
-                            <p><span><a class="link" href="#">support@themesflat.com</a></span></p>
+                            <p>
+                              <i class="fa fa-phone"></i>
+                                <span>
+                                    <strong >0536 830 53 46</strong>
+                                </span>
+
+                            </p>
+                           
                         </div>
                     </div><!-- /.iconbox -->
                 </div><!-- /.iconbox-item -->
@@ -50,30 +85,15 @@
                     <div class="iconbox left style2">
                         <div class="box-content">
                             <div class="box-title">
-                                <a href="#">Visit our location</a>
+                                <span>Email</span>
                             </div>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod.</p>
-                            <p>
-                                <span><strong>Telephone:</strong> <span class="number">1-888-345-6789</span></span>
-                                <br>
-                                <span> <strong>Fax:</strong> <span class="number">1-888-345-6789</span></span>
+                           <p>
+                              <i class="fa fa-envelope"></i>
+                                <span>
+                                    <a class="link" href="mailto:betayapidekor@gmail.com">betayapidekor@gmail.com</a>
+                                </span>
                             </p>
-                            <p><span><a class="link" href="#">support@themesflat.com</a></span></p>
-                        </div>
-                    </div><!-- /.iconbox -->
-                </div><!-- /.iconbox-item -->
-            </div>
 
-            <div class="col-md-4">
-                <div class="iconbox-item">
-                    <div class="iconbox left style2">
-                        <div class="box-content">
-                            <div class="box-title">
-                                <a href="#">Looking for a career?</a>
-                            </div>
-                            <p>Lorem üüü ÜÜÜ ÖÖÖÖ İİİ JJ ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod.</p>
-                            <p><span><strong>79 Orchard St,</strong> New York, NY 10002,</span><br><span> United States</span></p>
-                         
                         </div>
                     </div><!-- /.iconbox -->
                 </div><!-- /.iconbox-item -->
@@ -125,8 +145,9 @@
                     <div class="submit-wrap">
                         <button class="flat-button bg-theme">Send Your Message</button>
                     </div>
-                </form>--><!-- /.comment-form -->
-            <!--</div>--><!-- /.col-md-8 -->
-        <!--</div>--><!-- /.row -->
-    <!--</div>--><!-- /.container -->
+                </form>-->
+<!-- /.comment-form -->
+<!--</div>--><!-- /.col-md-8 -->
+<!--</div>--><!-- /.row -->
+<!--</div>--><!-- /.container -->
 <!--</section>-->

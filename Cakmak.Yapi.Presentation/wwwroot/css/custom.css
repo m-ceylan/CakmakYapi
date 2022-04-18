@@ -48,6 +48,21 @@
 }
 
 
+.google-map-conten-c {
+    width: 100% !important;
+    height: 500px !important;
+}
+
+.mt-10{
+    margin-top:10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+
+
 
 @media only screen and (max-width: 991px) {
     .images-box, .images-box.show {

@@ -43,10 +43,24 @@ namespace Cakmak.Yapi.Presentation
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.Use(async (ctx, next) =>
+            {
+                await next();
+
+                if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
+                {
+                    //Re-execute the request so the user gets the error page
+                    string originalPath = ctx.Request.Path.Value;
+                    ctx.Items["originalPath"] = originalPath;
+                    ctx.Request.Path = "/404";
+                    await next();
+                }
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
 
@@ -56,6 +70,25 @@ namespace Cakmak.Yapi.Presentation
                 pattern: "admin/{controller=HomeM}/{action=Index}/{id?}"
                );
 
+                endpoints.MapControllerRoute
+                (
+                name: "contact",
+                pattern: "iletisim",
+                defaults: new { controller = "Contact", action = "Index" }
+                );
+
+                endpoints.MapControllerRoute
+                (
+                    name: "about",
+                    pattern: "hakkimizda",
+                    defaults: new { controller = "About", action = "Index" }
+
+                );
+
+                endpoints.MapControllerRoute(
+                  name: "home",
+                  pattern: "anasayfa",
+                  defaults: new { controller = "Home", action = "Index" });
 
 
                 endpoints.MapControllerRoute(

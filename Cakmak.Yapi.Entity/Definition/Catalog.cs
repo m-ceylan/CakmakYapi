@@ -11,7 +11,7 @@ namespace Cakmak.Yapi.Entity.Definition
 
         public string Link { get; set; }
         public string Slug { get; set; }
-
+        public string HeadImage { get; set; }
 
     }
 }
