@@ -26,8 +26,6 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Code
         {
             try
             {
-
-
                 string FTPDosyaYolu = "ftp://94.73.170.187/ImageDeneme";
                 FtpWebRequest request = (FtpWebRequest)FtpWebRequest.Create(FTPDosyaYolu);
 
@@ -121,12 +119,12 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Code
             {
                 string imageExtension = Path.GetExtension(item.FileName);
 
-                if (imageExtension != Cakmak.Yapi.Core.Constant.JPG_EXTENSION &&
-                    imageExtension != Cakmak.Yapi.Core.Constant.JPEG_EXTENSION &&
-                    imageExtension != Cakmak.Yapi.Core.Constant.PNG_EXTENSION)
-                {
-                    continue;
-                }
+                //if (imageExtension != Cakmak.Yapi.Core.Constant.JPG_EXTENSION &&
+                //    imageExtension != Cakmak.Yapi.Core.Constant.JPEG_EXTENSION &&
+                //    imageExtension != Cakmak.Yapi.Core.Constant.PNG_EXTENSION)
+                //{
+                //    continue;
+                //}
 
                 string imageName = Guid.NewGuid() + imageExtension;
                 path = $"{Cakmak.Yapi.Core.Constant.rootPath}{imgUrl}/{imageName}";
@@ -147,6 +145,8 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Code
             Directory.CreateDirectory(path);
 
         }
+
+
 
     }
 }

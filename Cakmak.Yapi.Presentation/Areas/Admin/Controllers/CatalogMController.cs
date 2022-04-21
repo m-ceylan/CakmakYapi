@@ -70,7 +70,8 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             var item = new Catalog
             {
                 Title = request.Title,
-                Slug = slug
+                Slug = slug,
+                HeadImage = request.ImgUrl
             };
 
             await repo.AddAsync(item);
@@ -122,5 +123,41 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             response.SetMessage("Seçili öğeler başarıyla silindi");
             return Ok(response);
         }
+
+        [HttpPost]
+        public string AddHeaderPhoto()
+        {
+            var images = Request.Form?.Files;
+
+            CustomFileUpload customFileUpload = new();
+            var addImages = customFileUpload.UpLoadImage(
+                 new Models.Request.FileUploadRequest.ImageUploadRequest()
+                 {
+                     Collection = images,
+                     ContentCategory = Core.Enums.Enums.UploadFolder.Catalog,
+                     ContentType = Core.Enums.Enums.UploadFolder.Head,
+                 });
+
+            return addImages.Items[0].Url;
+        }
+
+        [DisableRequestSizeLimit]
+        [HttpPost]
+        public string AddFile()
+        {
+            var images = Request.Form?.Files;
+
+            CustomFileUpload customFileUpload = new();
+            var addImages = customFileUpload.UpLoadImage(
+                 new Models.Request.FileUploadRequest.ImageUploadRequest()
+                 {
+                     Collection = images,
+                     ContentCategory = Core.Enums.Enums.UploadFolder.Catalog,
+                     ContentType = Core.Enums.Enums.UploadFolder.Body,
+                 });
+
+            return addImages.Items[0].Url;
+        }
+
     }
 }

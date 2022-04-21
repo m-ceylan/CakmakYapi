@@ -32,6 +32,10 @@ namespace Cakmak.Yapi.Core.Enums
 
             [Display(Name = "about")]
             About = 7,
+            [Display(Name = "catalog")]
+            Catalog = 8,
+
+
         }
 
     }

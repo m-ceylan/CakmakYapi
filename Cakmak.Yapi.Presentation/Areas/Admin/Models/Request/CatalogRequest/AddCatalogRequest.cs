@@ -11,6 +11,7 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Models.Request.CatalogRequest
         [CustomRequired]
         public string Title { get; set; }
         public string Description { get; set; }
+        public string ImgUrl { get; set; }
 
 
     }
