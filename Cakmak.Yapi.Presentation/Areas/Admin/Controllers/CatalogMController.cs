@@ -71,7 +71,8 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Controllers
             {
                 Title = request.Title,
                 Slug = slug,
-                HeadImage = request.ImgUrl
+                HeadImage = request.ImgUrl,
+                Link= request.Link
             };
 
             await repo.AddAsync(item);

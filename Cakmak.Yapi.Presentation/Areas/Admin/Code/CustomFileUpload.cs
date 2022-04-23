@@ -145,8 +145,5 @@ namespace Cakmak.Yapi.Presentation.Areas.Admin.Code
             Directory.CreateDirectory(path);
 
         }
-
-
-
     }
 }

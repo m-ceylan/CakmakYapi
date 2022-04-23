@@ -7,73 +7,74 @@
 }
 
 
- <!-- Page title -->
-        <div class="page-title parallax parallax2">
-            <div class="overlay"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">                    
-                        <div class="page-title-heading">
-                            <h1 class="title"><span>Kataloglar</span></h1>
-                        </div><!-- /.page-title-captions -->
-                        <div class="breadcrumbs">
-                            <ul>
-                                <li><a href="@Url.Action("Index","Home")">Anasayfa</a></li>
-                                <li> Kataloglar </li>
-                            </ul>                   
-                        </div><!-- /.breadcrumbs -->   
-                    </div><!-- /.col-md-12 -->  
-                </div><!-- /.row -->  
-            </div><!-- /.container -->                      
-        </div><!-- /.page-title --> 
+<!-- Page title -->
+<div class="page-title parallax parallax2">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="title"><span>Kataloglar</span></h1>
+                </div><!-- /.page-title-captions -->
+                <div class="breadcrumbs">
+                    <ul>
+                        <li><a href="@Url.Action("Index","Home")">Anasayfa</a></li>
+                        <li> Kataloglar </li>
+                    </ul>
+                </div><!-- /.breadcrumbs -->
+            </div><!-- /.col-md-12 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</div><!-- /.page-title -->
+<!-- Portfolio -->
+<section class="flat-row">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="portfolio-filter">
+                    <li class="active"><a>Hepsi</a></li>
+                    @*<li><a data-filter=".builder" href="#">Design</a>
+                        <div class="filter-tooltip">5</div>
+                        </li>
+                        <li><a data-filter=".electric" href="#">Makerting</a>
+                        <div class="filter-tooltip">15</div>
+                        </li>
+                        <li><a data-filter=".hammer" href="#">Mockup</a>
+                        <div class="filter-tooltip">88</div>
+                        </li>
+                        <li><a data-filter=".painting" href="#">Painting</a>
+                        <div class="filter-tooltip">27</div>
+                        </li>*@
+                </ul><!-- /.project-filter -->
+            </div>
+        </div>
 
-        <!-- Portfolio -->
-        <section class="flat-row">  
-            <div class="container">                
-                <div class="row">
-                    <div class="col-md-12">                           
-                        <ul class="portfolio-filter">
-                            <li class="active"><a>Hepsi</a></li>
-                            @*<li><a data-filter=".builder" href="#">Design</a>
-                                <div class="filter-tooltip">5</div>
-                            </li>
-                            <li><a data-filter=".electric" href="#">Makerting</a>
-                                <div class="filter-tooltip">15</div>
-                            </li>
-                            <li><a data-filter=".hammer" href="#">Mockup</a>
-                                <div class="filter-tooltip">88</div>
-                            </li>
-                            <li><a data-filter=".painting" href="#">Painting</a>
-                                <div class="filter-tooltip">27</div>
-                            </li>*@
-                        </ul><!-- /.project-filter -->
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="flat-portfolio grid-3columns simple style-4">
+                    <div class="portfolio-wrap clearfix">
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="flat-portfolio grid-3columns simple style-4">             
-                            <div class="portfolio-wrap clearfix">
+                        @foreach (var item in Model.Data.Items)
+                        {
+                            <div class="item builder painting">
+                                <div class="featured-images">
+                                    <img src="@item.HeadImage" alt="images">
+                                    <h3 class="project-title top-45">@item.Title</h3>
+                                    <div class="overlay">
+                                        <ul class="portfolio-details widht-100 top-50">
 
-                                 @foreach (var item in Model.Data.Items)
-                               {
-                                    <div class="item builder painting">                                
-                                    <div class="featured-images">
-                                        <img src="@item.HeadImage" alt="images">
-                                        <h3 class="project-title top-45">@item.Title</h3>
-                                        <div class="overlay">  
-                                            <ul class="portfolio-details widht-100 top-50" >
-                                                
-                                                <li><a href="@Url.Action("Detail","Catalog",new {id=item.Slug})"><i class="fa fa-external-link"></i></a></li>
-                                            </ul>                      
-                                        </div>                       
-                                    </div><!-- /.featured-images -->                                              
-                                </div><!-- /.portfolio-item -->
-                               }
-                                
-                            </div><!-- /.portfolio-wrap --> 
-                        </div><!-- /.flat-portfolio --> 
-                    </div>
-                </div>
-            </div> 
-        </section> 
+                                            <li><a href="@Url.Action("Detail","Catalog",new {id=item.Slug})" target="_blank"><i class="fa fa-external-link"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div><!-- /.featured-images -->
+                        </div>
+
+                            <!-- /.portfolio-item -->
+                        }
+
+                    </div><!-- /.portfolio-wrap -->
+                </div><!-- /.flat-portfolio -->
+            </div>
+        </div>
+    </div>
+</section>

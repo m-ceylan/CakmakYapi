@@ -69,38 +69,88 @@ namespace Cakmak.Yapi.Presentation
 
             app.UseEndpoints(endpoints =>
             {
-
+                #region Admin
                 endpoints.MapAreaControllerRoute(
-                name: "Admin",
-                areaName: "Admin",
-                pattern: "admin/{controller=HomeM}/{action=Index}/{id?}"
+                        name: "Admin",
+                        areaName: "Admin",
+                        pattern: "admin/{controller=HomeM}/{action=Index}/{id?}"
+                       ); 
+                #endregion
+
+                #region Ýletiþim
+                endpoints.MapControllerRoute
+        (
+            name: "contact",
+            pattern: "iletisim",
+            defaults: new { controller = "Contact", action = "Index" }
+        ); 
+                #endregion
+
+                #region Katalog
+                endpoints.MapControllerRoute
+                 (
+                     name: "catalog",
+                     pattern: "katalog",
+                     defaults: new { controller = "Catalog", action = "Index" }
+                 );
+
+                #endregion
+
+                #region Çalýþmalarýmýz
+                endpoints.MapControllerRoute
+               (
+                   name: "work/detail",
+                   pattern: "calismalarimiz/{id}",
+                   defaults: new { controller = "Work", action = "Detail" }
                );
 
                 endpoints.MapControllerRoute
-                (
-                name: "contact",
-                pattern: "iletisim",
-                defaults: new { controller = "Contact", action = "Index" }
-                );
+              (
+                  name: "work",
+                  pattern: "calismalarimiz",
+                  defaults: new { controller = "Work", action = "Index" }
+              );
+
+                #endregion
+
+                #region Hizmetlerimiz
+                endpoints.MapControllerRoute
+                    (
+                        name: "services/detail",
+                        pattern: "hizmetlerimiz/{id}",
+                        defaults: new { controller = "Services", action = "Detail" }
+                    );
 
                 endpoints.MapControllerRoute
-                (
-                    name: "about",
-                    pattern: "hakkimizda",
-                    defaults: new { controller = "About", action = "Index" }
+               (
+                   name: "services",
+                   pattern: "hizmetlerimiz",
+                   defaults: new { controller = "Services", action = "Index" }
+               ); 
+                #endregion
 
-                );
+                #region Hakkýmýz
+                endpoints.MapControllerRoute
+        (
+            name: "about",
+            pattern: "hakkimizda",
+            defaults: new { controller = "About", action = "Index" }
+        ); 
+                #endregion
 
+                #region Anasayfa
                 endpoints.MapControllerRoute(
-                  name: "home",
-                  pattern: "anasayfa",
-                  defaults: new { controller = "Home", action = "Index" });
+                         name: "home",
+                         pattern: "anasayfa",
+                         defaults: new { controller = "Home", action = "Index" }); 
+                #endregion
 
-
+                #region Default
                 endpoints.MapControllerRoute(
-                     name: "default",
-                     pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+                            name: "default",
+                            pattern: "{controller=Home}/{action=Index}/{id?}");
+            }); 
+            #endregion
         }
     }
 }

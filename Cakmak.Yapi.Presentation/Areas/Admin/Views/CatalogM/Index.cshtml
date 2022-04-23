@@ -177,6 +177,7 @@
                                                drag
                                                :action="addFile"
                                                :file-list="fileList"
+                                               :on-success="handleFileSuccess"
                                                multiple>
                                         <i class="el-icon-upload"></i>
                                         <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
@@ -234,7 +235,9 @@
             checkAll: false,
             request: {
                 id: null,
-                title: ''
+                title: '',
+                link:'',
+                ImgUrl:''
             },
             filter: {
                 Skip: 0,
@@ -267,7 +270,11 @@
             },
             handleAvatarSuccess(res, file) {
             this.imageUrl = res;
-        }, beforeAvatarUpload(file) {
+             },
+              handleFileSuccess(res, file) {
+            this.request.link = res;
+             },
+        beforeAvatarUpload(file) {
               debugger;
 
             const isLt2M = file.size / 1024 / 1024 < 2;
@@ -288,7 +295,7 @@
                 this.filter.TotalCount = res.data.data.totalCount;
             },
             addItem: async function () {
-                 this.request.image=this.imageUrl;
+                 this.request.imgUrl=this.imageUrl;
                 this.response = (await this.$service.post('catalogM/add', this.request)).data;
                 if (!this.response.hasError) {
                     this.$message.success(this.response.message);
