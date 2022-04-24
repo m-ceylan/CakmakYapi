@@ -52,13 +52,12 @@ namespace Cakmak.Yapi.Presentation
             app.Use(async (ctx, next) =>
             {
                 await next();
-
                 if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
                 {
                     //Re-execute the request so the user gets the error page
                     string originalPath = ctx.Request.Path.Value;
                     ctx.Items["originalPath"] = originalPath;
-                    ctx.Request.Path = "/404";
+                    ctx.Request.Path = "/sayfa-bulunamadi";
                     await next();
                 }
             });
@@ -74,10 +73,22 @@ namespace Cakmak.Yapi.Presentation
                         name: "Admin",
                         areaName: "Admin",
                         pattern: "admin/{controller=HomeM}/{action=Index}/{id?}"
-                       ); 
+                       );
+                #endregion
+
+                #region ErrorPage
+                endpoints.MapControllerRoute
+             (
+                 name: "error",
+                 pattern: "sayfa-bulunamadi",
+                 defaults: new { controller = "Error", action = "PageNotFound" }
+             ); 
                 #endregion
 
                 #region Ýletiþim
+
+
+
                 endpoints.MapControllerRoute
         (
             name: "contact",

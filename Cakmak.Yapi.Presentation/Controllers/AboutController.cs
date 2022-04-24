@@ -22,6 +22,9 @@ namespace Cakmak.Yapi.Presentation.Controllers
         {
            var response = await repo.FirstOrDefaultByAsync (x=>x.IsActive);
 
+            if (response == null) return View("~/Views/Error/PageNotFound.cshtml");
+
+
             return View(response);
         }
     }

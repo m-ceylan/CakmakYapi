@@ -5,7 +5,6 @@ namespace Cakmak.Yapi.Presentation.Controllers
     public class ErrorController : Controller
     {
         [HttpGet]
-        [Route("/404")]
         public IActionResult PageNotFound()
         {
             string originalPath = "unknown";

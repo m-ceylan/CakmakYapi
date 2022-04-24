@@ -34,14 +34,11 @@ namespace Cakmak.Yapi.Presentation.Controllers
         public async Task<IActionResult> Detail([FromRoute] string id)
         {
 
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                return NotFound();
-            }
-
             var response = new GetWorkResponse();
 
             response.Item = await repo.FirstOrDefaultByAsync(x => x.Slug == id);
+
+            if (response.Item == null) return View("~/Views/Error/PageNotFound.cshtml");
 
             return View(response);
         }

@@ -27,6 +27,7 @@ namespace Cakmak.Yapi.Presentation.Controllers
 
             response.Data.Items = await repo.GetBy(x => true).ToListAsync();
             response.Data.TotalCount = response.Data.Items.Count;
+
             return View(response);
         }
 
@@ -34,7 +35,7 @@ namespace Cakmak.Yapi.Presentation.Controllers
         {
             var item = await repo.FirstOrDefaultByAsync(x => x.Slug == id);
 
-            if (item == null) return NotFound();
+            if (item == null) View("~/Views/Error/PageNotFound.cshtml");
 
             var request = HttpContext.Request;
 

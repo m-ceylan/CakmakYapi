@@ -22,7 +22,7 @@ namespace Cakmak.Yapi.Presentation.Controllers
 
         [HttpGet] 
         public async Task<IActionResult> Index()
-        {
+        { 
             var response = new BaseResponse<LoadServicesResponse>();
             response.Data = new LoadServicesResponse();
             var query = repo.GetBy(x => true);
@@ -37,14 +37,12 @@ namespace Cakmak.Yapi.Presentation.Controllers
         public async Task<IActionResult> Detail([FromRoute]string id)
         {
 
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                return NotFound();
-            }
-
             var response = new GetServiceResponse();
 
             response.Item= await repo.FirstOrDefaultByAsync(x => x.Slug == id);
+
+            if (response.Item == null) return View("~/Views/Error/PageNotFound.cshtml");
+
 
             return View(response);
         }
