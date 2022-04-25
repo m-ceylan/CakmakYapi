@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cakmak.Yapi.Core.Security;
 using Cakmak.Yapi.Helpers;
+using Cakmak.Yapi.Repository.ProjectUser;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
@@ -26,6 +28,10 @@ namespace Cakmak.Yapi.Presentation
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("mongoDB");
+         
+            services.AddSession();
+            services.ConfigureAuthentication();
+            //services.AddHttpContextAccessor();
             services.ConfigureRepositories(connectionString);
             services.AddControllersWithViews();
             services.Configure<FormOptions>(options =>
@@ -36,7 +42,7 @@ namespace Cakmak.Yapi.Presentation
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserRepository userRepository)
         {
             if (env.IsDevelopment())
             {
@@ -45,6 +51,7 @@ namespace Cakmak.Yapi.Presentation
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                //app.UseHttpsRedirection();
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -64,7 +71,10 @@ namespace Cakmak.Yapi.Presentation
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseSession();
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCookiePolicy(); // eklendikten sonra admin giriþi çalýþtý
 
             app.UseEndpoints(endpoints =>
             {
@@ -74,6 +84,15 @@ namespace Cakmak.Yapi.Presentation
                         areaName: "Admin",
                         pattern: "admin/{controller=HomeM}/{action=Index}/{id?}"
                        );
+                #endregion
+
+                #region Login
+                endpoints.MapControllerRoute
+                    (
+                        name: "login",
+                        pattern: "login",
+                        defaults: new { controller = "Login", action = "Index" }
+                    ); 
                 #endregion
 
                 #region ErrorPage
@@ -160,8 +179,21 @@ namespace Cakmak.Yapi.Presentation
                 endpoints.MapControllerRoute(
                             name: "default",
                             pattern: "{controller=Home}/{action=Index}/{id?}");
-            }); 
+           
             #endregion
+            });
+
+            if (!await userRepository.AnyAsync(x => x.Email == "sibel"))
+            {
+                await userRepository.AddAsync(new Entity.ProjectUser.User
+                {
+                    FirstName = "sibel",
+                    LastName = "sibel",
+                    Email = "sibel",
+                    Password = new Cryptography().EncryptString("VarOlanSifre:@"),  
+                });
+            }
+
         }
     }
 }

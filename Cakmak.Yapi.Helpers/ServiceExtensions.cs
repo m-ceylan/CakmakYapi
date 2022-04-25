@@ -1,6 +1,7 @@
 ﻿using Cakmak.Yapi.Repository.Application;
 using Cakmak.Yapi.Repository.Definition;
 using Cakmak.Yapi.Repository.ProjectUser;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -27,5 +28,16 @@ namespace Cakmak.Yapi.Helpers
             services.AddSingleton(x => new UserRepository(connectionString, baseDBName, "user"));
             #endregion
         }
+
+
+        public static void ConfigureAuthentication(this IServiceCollection services)
+        {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/login";
+            });
+        }
+
     }
 }
