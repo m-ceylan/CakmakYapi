@@ -20,7 +20,7 @@ namespace Cakmak.Yapi.Presentation.Controllers
             repo = _repo;
         }
         public IActionResult Index()
-        
+
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -65,17 +65,7 @@ namespace Cakmak.Yapi.Presentation.Controllers
             ClaimsIdentity userIdentity = new ClaimsIdentity(claims, "login");
             ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
 
-            try
-            {
-                await HttpContext.SignInAsync(principal);
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
+            await HttpContext.SignInAsync(principal);
 
             return RedirectToAction("Index", "HomeM", new { Area = "admin" });
         }

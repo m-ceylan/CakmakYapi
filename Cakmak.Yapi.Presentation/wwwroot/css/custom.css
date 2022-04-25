@@ -28,6 +28,15 @@
     display: none !important;
 }
 
+.top-35 {
+    top: 35% !important;
+}
+
+.top-40 {
+    top: 40% !important;
+}
+
+
 .top-45 {
     top: 45% !important;
 }

@@ -25,58 +25,37 @@
     </div><!-- /.container -->
 </div><!-- /.page-title -->
 <!-- serives -->
-<section class="flat-row">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="title-section text-center">
-                    <h1 class="title">Hizmetlerimiz</h1>
-                </div>
-                <div class="flat-spacer height30"></div>
-            </div><!-- /.col-md-12 -->
-
-        </div>
-        @{
-
-            var avarage = (Convert.ToDouble(Model.Data.TotalCount) / 3);
-            var rowCount = Math.Ceiling(avarage);
-            int take = 3;
-            int skip = 0;
-            var showFlag = true;
-
-            @for (var i = 1; i <= rowCount; i++)
-            {
+ <section class="flat-row">  
+            <div class="container">                
                 <div class="row">
                     <div class="col-md-12">
-                        @foreach (var item in Model.Data.Items.Skip(skip).Take(take))
-                        {
-                            <div class="images-box @(showFlag ? "show" : "")  clear-fix ">
-                                <div>
-                                    <img src="@item.HeadImageUrl" alt="serives">
-                                </div>
-                                <div class="box-content">
-                                    <div class="box-title">
-                                        <a href="#">@item.Title</a>
-                                    </div>
-                                    @item.Description
-                                    <a href="@Url.Action("Detail","Services",new {id = item.Slug})" class="box-redmore">Detaya Git</a>
-                                </div>
-                            </div>
-                            showFlag = false;
-                        }
-                    </div><!-- /.col-md-12 -->
-            </div>
+                        <div class="flat-portfolio grid-3columns simple style-4">             
+                            <div class="portfolio-wrap clearfix">
 
-                skip = (take * i);
-            }
-        }
-
-
-
-
-
-
-    </div><!-- /.container -->
-</section>
+                                 @foreach (var item in Model.Data.Items)
+                               {
+                                    <div class="item builder painting">                                
+                                    <div class="featured-images">
+                                        <img src="@item.HeadImageUrl" alt="images">
+                                        <h3 class="project-title top-40">@item.Title</h3>
+                                        <p class="project-title top-45">@item.Description</p>
+                                        <div class="overlay">  
+                                            <ul class="portfolio-details widht-100 top-50" >
+                                                <li><a class="popup-gallery" href="@item.HeadImageUrl">
+                                                    <i class="fa fa-search"></i></a>
+                                                </li>
+                                                <li><a href="@Url.Action("Detail","Services",new {id=item.Slug})"><i class="fa fa-external-link"></i></a></li>
+                                            </ul>                      
+                                        </div>                       
+                                    </div><!-- /.featured-images -->                                              
+                                </div><!-- /.portfolio-item -->
+                               }
+                                
+                            </div><!-- /.portfolio-wrap --> 
+                        </div><!-- /.flat-portfolio --> 
+                    </div>
+                </div>
+            </div> 
+        </section> 
 
 

@@ -25,6 +25,46 @@
 </div><!-- /.page-title -->
 <!-- Portfolio detail -->
 
+
+
+
+<section class="flat-row">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="flat-portfolio grid-3columns simple style-4">
+                    <div class="portfolio-wrap clearfix">
+
+                        @foreach (var item in Model.Item.Images.OrderBy(x => x.OrderNo).ToList())
+                        {
+                            <div class="item builder painting">
+                                <div class="featured-images">
+                                    <img src="@item.Url" alt="images">
+                                    <div class="overlay">
+                                        <ul class="portfolio-details widht-100 top-50">
+                                            <li>
+                                                <a class="popup-gallery" href="@item.Url">
+                                                    <i class="fa fa-search"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div><!-- /.featured-images -->
+                        </div>
+
+                            <!-- /.portfolio-item -->
+                        }
+
+
+                    </div><!-- /.portfolio-wrap -->
+                </div><!-- /.flat-portfolio -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@*
  
 <section class="flat-row">
     <div class="container">
@@ -68,3 +108,4 @@
         </div>
     </div>
 </section>
+*@
