@@ -6,7 +6,17 @@ namespace Cakmak.Yapi.Presentation.Controllers
     {
         public IActionResult Index()
         {
+            
             return View();
+        }
+
+
+        public void SendWhatsappMessage()
+        {
+
+           
+
+            
         }
     }
 }

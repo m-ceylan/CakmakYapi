@@ -29,7 +29,7 @@ namespace Cakmak.Yapi.Presentation
         {
             string connectionString = Configuration.GetConnectionString("mongoDB");
          
-            services.AddSession();
+            //services.AddSession();
             services.ConfigureAuthentication();
             //services.AddHttpContextAccessor();
             services.ConfigureRepositories(connectionString);
@@ -38,7 +38,6 @@ namespace Cakmak.Yapi.Presentation
             {
                 options.MultipartBodyLengthLimit = 60000000;
             });
-            //services.AddControllers()./*AddNewtonsoftJson*/();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,7 +70,7 @@ namespace Cakmak.Yapi.Presentation
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseSession();
+            //app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseCookiePolicy(); // eklendikten sonra admin giriþi çalýþtý
